@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Beverage shop</title>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Volume</th>
+        <th>Price</th>
+        <th>In stock</th>
+        <th>Is alcoholic</th>
+
+    <tr th:each="bottle : ${bottels}">
+        <td><img width="120" th:src="${bottle.bottlePic}"/></td>
+        <td th:text="${bottle.name}" />
+        <td th:text="${bottle.volume}" />
+        <td th:text="${bottle.price}" />
+        <td th:text="${bottle.inStock}" />
+        <td th:text="${bottle.isAlcoholic}" />
+    </tr>
+    </tr>
+
+
+
+
+    </thead>
+
+
+</table>
+
+</body>
+</html>
