@@ -2,33 +2,87 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+
+
     <meta charset="UTF-8">
     <title>Add</title>
+    <script type="text/javascript">
+        function setBeverageVisible(status) {
+            let elems = document.getElementsByClassName("beverage")
+            for (let i = 0; i < elems.length; i++) {
+                elems[i].style.visibility = status;
+            }
+        }
+
+        function setCrateVisible(status) {
+            let elems = document.getElementsByClassName("crate")
+            for (let i = 0; i < elems.length; i++) {
+                elems[i].style.visibility = status;
+            }
+        }
+
+        function buildForm() {
+            if (document.getElementById("item").value == "beverage") {
+                setBeverageVisible("visible");
+                setCrateVisible("hidden");
+            } else {
+                setBeverageVisible("hidden");
+                setCrateVisible("visible");
+            }
+        }
+
+        window.onload = function() { buildForm(); }
+    </script>
 </head>
 <body>
 
-<table class="table">
-
-
 <label for="item">Choose an item type you want to add to the shop:</label>
 
-<select name="item" id="item">
+<select name="item" id="item" onChange="buildForm()">
     <option value="beverage">Beverage</option>
     <option value="crate">Crate</option>
 </select>
 
-<form method="POST" th:action="@{/portfolio}" th:object="${bottle}">
-    <tr> <td>Name             <input name="name" type="text"></td>                           </tr>
-    <tr> <td>URL for picture: <input name="bottlePic" type="text"/></td>                     </tr>
-    <tr> <td>Volume           <input name="volume" type="text"></td>                         </tr>
-    <tr> <td>Volume percent   <input name="volumePercent" type="number"></td>                </tr>
-    <tr> <td>Price            <input name="price" type="number"></td>                        </tr>
-    <tr> <td>Supplier         <input name="supplier" type="text"></td>                       </tr>
-    <tr> <td>In stock         <input name="inStock" type="number"></td>                      </tr>
-    <tr> <td>Is alcoholic     <input name="isAlcoholic" type="checkbox"></td>                </tr>
+<table class="table">
 
-    <tr><td><button>Add to the shop</button></td></tr>
-</form>
+    <form method="POST" th:action="@{/portfolio}" th:object="${bottle}" id="postForm">
+        <tr>
+            <td>Name <input name="name" type="text"/></td>
+        </tr>
+        <tr>
+            <td>URL for picture: <input name="bottlePic" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Price <input name="price" type="number"></td>
+        </tr>
+        <tr>
+            <td>In stock <input name="inStock" type="number"></td>
+        </tr>
+
+        <tr class="crate">
+            <td>Number of Bottles <input name="noOfBottles" type="number"></td>
+        </tr>
+
+        <tr class="beverage">
+            <td>Volume <input name="volume" type="number"></td>
+        </tr>
+        <tr class="beverage">
+            <td>Is alcoholic<input name="isAlcoholic" type="checkbox"></td>
+        </tr>
+        <tr class="beverage">
+            <td>Volume Percent <input name="volumePercent" type="number"></td>
+        </tr>
+        <tr class="beverage">
+            <td>Supplier <input name="supplier" type="text"></td>
+        </tr>
+
+
+        <tr>
+            <td>
+                <button>Add to the shop</button>
+            </td>
+        </tr>
+    </form>
 
 </table>
 </body>
