@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Add</title>
     <script type="text/javascript">
@@ -47,33 +48,33 @@
 
     <form method="POST" th:action="@{/portfolio}" th:object="${bottle}" id="postForm">
         <tr>
-            <td>Name <input name="name" type="text"/></td>
+            <td>Name <input name="name" type="text" th:field="*{name}"/></td>
         </tr>
         <tr>
-            <td>URL for picture: <input name="bottlePic" type="text"/></td>
+            <td>URL for picture: <input name="bottlePic" type="text" th:field="*{bottlePic}"/></td>
         </tr>
         <tr>
-            <td>Price <input name="price" type="number"></td>
+            <td>Price <input name="price" type="number" th:field="*{price}"></td>
         </tr>
         <tr>
-            <td>In stock <input name="inStock" type="number"></td>
+            <td>In stock <input name="inStock" type="number" th:field="*{inStock}"></td>
         </tr>
 
-        <tr class="crate">
-            <td>Number of Bottles <input name="noOfBottles" type="number"></td>
-        </tr>
+<!--        <tr class="crate">-->
+<!--            <td>Number of Bottles <input name="noOfBottles" type="number" th:field="*{noOfBottles}"></td>-->
+<!--        </tr>-->
 
         <tr class="beverage">
-            <td>Volume <input name="volume" type="number"></td>
+            <td>Volume <input name="volume" type="number" th:field="*{volume}"></td>
+        </tr>
+<!--        <tr class="beverage">-->
+<!--            <td>Is alcoholic<input name="isAlcoholic" type="text" th:field="*{isAlcoholic}"></td>-->
+<!--        </tr>-->
+        <tr class="beverage">
+            <td>Volume Percent <input name="volumePercent" type="number" th:field="*{volumePercent}"> </td>
         </tr>
         <tr class="beverage">
-            <td>Is alcoholic<input name="isAlcoholic" type="checkbox"></td>
-        </tr>
-        <tr class="beverage">
-            <td>Volume Percent <input name="volumePercent" type="number"></td>
-        </tr>
-        <tr class="beverage">
-            <td>Supplier <input name="supplier" type="text"></td>
+            <td>Supplier <input name="supplier" type="text" th:field="*{supplier}"></td>
         </tr>
 
 

@@ -28,7 +28,7 @@ public class Bottle {
     private String bottlePic;
     @DecimalMin("0.1")
     private double volume;
-    private boolean isAlcoholic;
+//    private boolean isAlcoholic;
     //   when value > 0.0, than isAlcoholic true)
     private double volumePercent;
     @Min(1)
