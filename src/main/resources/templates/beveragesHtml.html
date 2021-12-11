@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Beverage shop</title>
 </head>
@@ -10,6 +12,7 @@
 <table>
     <thead>
     <tr>
+        <th>Item number</th>
         <th>Image</th>
         <th>Name</th>
         <th>Volume</th>
@@ -20,9 +23,11 @@
     </tr>
 
 
-    <tr th:each="bottle : ${bottles}">
-        <td><img width="120" src=th:src="${bottle.bottlePic}" alt="No picture"/></td>
-        <td  th:text="${bottle.name}"> </td>
+
+
+    <tr th:each="bottle: ${bottles}">
+        <td><img width="120" th:src="${bottle.bottlePic}" alt="No picture"/></td>
+        <td  th:text="${bottle.getName()}"> </td>
         <td th:text="${bottle.volume}" > </td>
         <td th:text="${bottle.volumePercent}" ></td>
         <td th:text="${bottle.price}" ></td>
@@ -31,7 +36,7 @@
 
 
 
-    <tr th:each="crate : ${crates}">
+    <tr th:each="crate  : ${crates}">
         <td><img width="120" th:src="${crate.cratePic}" />  </td>
         <td th:text="${crate.getName()}"> </td>
         <td th:text="${crate.getPrice()}">  </td>
