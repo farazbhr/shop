@@ -20,22 +20,22 @@ public class Bottle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @NotEmpty
-    @Pattern(regexp = "[^A-Za-z0-9]", message = "No valid name")
+   // @NotNull
+   // @NotEmpty
+   // @Pattern(regexp = "[^A-Za-z0-9]", message = "No valid name")
     private String name;
-    @Pattern(regexp = "(https:\\\\/\\\\/).*\\\\.(?:jpg|gif|png)\"")
+    // @Pattern(regexp = "(https:\\\\/\\\\/).*\\\\.(?:jpg|gif|png)\"")
     private String bottlePic;
-    @DecimalMin("0.1")
+    // @DecimalMin("0.1")
     private double volume;
-//    private boolean isAlcoholic;
+   //  private boolean isAlcoholic;
     //   when value > 0.0, than isAlcoholic true)
     private double volumePercent;
-    @Min(1)
+    //@Min(1)
     private int price;
-    @NotEmpty
-    @NotNull
+    // @NotEmpty
+    //@NotNull
     private String supplier;
-    @Min(0)
+    //@Min(0)
     private int inStock;
 }

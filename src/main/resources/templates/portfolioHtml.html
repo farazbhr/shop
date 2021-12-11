@@ -4,35 +4,35 @@
       xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Add</title>
+    <style>
+        th, td {
+            border: 1px solid black;
+        }
+
+        input {
+            position: absolute;
+            left: 200px;
+        }
+
+    </style>
     <script type="text/javascript">
-        function setBeverageVisible(status) {
-            let elems = document.getElementsByClassName("beverage")
-            for (let i = 0; i < elems.length; i++) {
-                elems[i].style.visibility = status;
-            }
-        }
-
-        function setCrateVisible(status) {
-            let elems = document.getElementsByClassName("crate")
-            for (let i = 0; i < elems.length; i++) {
-                elems[i].style.visibility = status;
-            }
-        }
-
         function buildForm() {
             if (document.getElementById("item").value == "beverage") {
-                setBeverageVisible("visible");
-                setCrateVisible("hidden");
+                document.getElementById("bottleTable").style.display="block";
+                document.getElementById("crateTable").style.display="none";
             } else {
-                setBeverageVisible("hidden");
-                setCrateVisible("visible");
+                document.getElementById("bottleTable").style.display="none";
+                document.getElementById("crateTable").style.display="block";
             }
         }
 
-        window.onload = function() { buildForm(); }
+        window.onload = function () {
+            buildForm();
+        }
     </script>
 </head>
 <body>
@@ -44,40 +44,17 @@
     <option value="crate">Crate</option>
 </select>
 
-<table class="table">
+<table  id="bottleTable">
 
-    <form method="POST" th:action="@{/portfolio}" th:object="${bottle}" id="postForm">
-        <tr>
-            <td>Name <input name="name" type="text" th:field="*{name}"/></td>
-        </tr>
-        <tr>
-            <td>URL for picture: <input name="bottlePic" type="text" th:field="*{bottlePic}"/></td>
-        </tr>
-        <tr>
-            <td>Price <input name="price" type="number" th:field="*{price}"></td>
-        </tr>
-        <tr>
-            <td>In stock <input name="inStock" type="number" th:field="*{inStock}"></td>
-        </tr>
-
-<!--        <tr class="crate">-->
-<!--            <td>Number of Bottles <input name="noOfBottles" type="number" th:field="*{noOfBottles}"></td>-->
-<!--        </tr>-->
-
-        <tr class="beverage">
-            <td>Volume <input name="volume" type="number" th:field="*{volume}"></td>
-        </tr>
-<!--        <tr class="beverage">-->
-<!--            <td>Is alcoholic<input name="isAlcoholic" type="text" th:field="*{isAlcoholic}"></td>-->
-<!--        </tr>-->
-        <tr class="beverage">
-            <td>Volume Percent <input name="volumePercent" type="number" th:field="*{volumePercent}"> </td>
-        </tr>
-        <tr class="beverage">
-            <td>Supplier <input name="supplier" type="text" th:field="*{supplier}"></td>
-        </tr>
-
-
+    <form method="POST" th:action="@{/portfolio}" th:object="${bottle}" >
+        <tr><td>Name              <input name="name" type="text" th:field="*{name}"/></td></tr>
+        <tr><td>URL for picture:  <input name="bottlePic" type="text" th:field="*{bottlePic}"/></td></tr>
+        <tr><td>Volume            <input name="volume" type="number" th:field="*{volume}"></td></tr>
+<!--       <&#45;&#45; <tr><td>Is alcoholic      <input name="isAlcoholic" type="" th:field="*{isAlcoholic}"></td></tr>  ->-->
+        <tr><td>Volume Percent     <input name="volumePercent" type="number" th:field="*{volumePercent}"></td></tr>
+        <tr><td>Price              <input name="price" type="number" th:field="*{price}"></td></tr>
+        <tr><td>Supplier            <input name="supplier" type="text" th:field="*{supplier}"></td></tr>
+        <tr><td>In stock        <input name="inStock" type="number" th:field="*{inStock}"></td></tr>
         <tr>
             <td>
                 <button>Add to the shop</button>
@@ -86,6 +63,23 @@
     </form>
 
 </table>
+
+    <table id="crateTable">
+    <form method="POST" th:action="@{/portfolio}" th:object="${crate}" >
+        <tr><td>Name <input name="name" type="text" th:field="*{name}"/></td></tr>
+        <tr><td>URL for picture: <input name="cratePic" type="text" th:field="*{cratePic}"/></td></tr>
+        <tr><td>Number of Bottles <input name="noOfBottles" type="number" th:field="*{noOfBottles}"></tr>
+        <tr><td>Price <input name="price" type="number" th:field="*{price}"></td></tr>
+        <tr><td>In stock <input name="cratesInStock" type="number" th:field="*{cratesInStock}"></td></tr>
+        <tr>
+            <td>
+                <button>Add to the shop</button>
+            </td>
+        </tr>
+    </form>
+</table>
+
+
 </body>
 </html>
 
