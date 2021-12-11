@@ -1,5 +1,6 @@
 package de.shop.shop.model;
 
+//import android.arch.persistence.room.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,22 +21,23 @@ public class Bottle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-   // @NotNull
-   // @NotEmpty
-   // @Pattern(regexp = "[^A-Za-z0-9]", message = "No valid name")
+    @NotNull(message="Name must be set")
+    @NotEmpty(message="Name cannot be empty")
+    @Pattern(regexp = "^[A-Za-z0-9]*$", message = "Name can only contain letters and digits")
     private String name;
-    // @Pattern(regexp = "(https:\\\\/\\\\/).*\\\\.(?:jpg|gif|png)\"")
+    @Pattern(regexp = "(https:\\/\\/).*\\.(?:jpg|gif|png)", message="Must be valid URL to a picture")
     private String bottlePic;
-    // @DecimalMin("0.1")
+    @Positive(message="Volume must be > 0")
     private double volume;
-   //  private boolean isAlcoholic;
-    //   when value > 0.0, than isAlcoholic true)
+    //to be done: isAlcoholic must be true if VolumePercent > 0
+    //private boolean isAlcoholic;
+    @PositiveOrZero(message="VolumePercent must be >= 0")
     private double volumePercent;
-    //@Min(1)
+    @Positive(message="Price must be > 0")
     private int price;
-    // @NotEmpty
-    //@NotNull
+    @NotEmpty(message="Supplier must be set")
+    @NotNull(message="Supplier cannot be empty")
     private String supplier;
-    //@Min(0)
+    @PositiveOrZero(message="in Stock must be >= 0")
     private int inStock;
 }

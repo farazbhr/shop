@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<table>
+<table class="table">
     <thead>
     <tr>
         <th>Item number</th>
@@ -18,36 +18,34 @@
         <th>Volume</th>
         <th>Volume Percent</th>
         <th>Price</th>
-        <th>In stock</th>
         <th>Supplier</th>
+        <th>In stock</th>
     </tr>
+    <thead>
 
 
-
-
-    <tr th:each="bottle: ${bottles}">
+    <tr th:each="bottle : ${bottles}">
+        <td th:text="${bottle.id}"></td>
         <td><img width="120" th:src="${bottle.bottlePic}" alt="No picture"/></td>
-        <td  th:text="${bottle.getName()}"> </td>
-        <td th:text="${bottle.volume}" > </td>
-        <td th:text="${bottle.volumePercent}" ></td>
-        <td th:text="${bottle.price}" ></td>
-        <td th:text="${bottle.supplier}" ></td>
+        <td th:text="${bottle.getName()}"> </td>
+        <td th:text="${bottle.volume}"> </td>
+        <td th:text="${bottle.volumePercent}"></td>
+        <td th:text="${bottle.price}"></td>
+        <td th:text="${bottle.supplier}"></td>
+        <td th:text="${bottle.inStock}"></td>
     </tr>
 
 
 
-    <tr th:each="crate  : ${crates}">
-        <td><img width="120" th:src="${crate.cratePic}" />  </td>
-        <td th:text="${crate.getName()}"> </td>
-        <td th:text="${crate.getPrice()}">  </td>
-        <td th:text="${crate.getCratesInStock()}">  </td>
-        <td th:text="${crate.noOfBottles}" >  </td>
+    <tr th:each="crate : ${crates}">
+        <td th:text="${crate.id}"></td>
+        <td><img width="120" th:src="${crate.cratePic}" alt="No picture"/> </td>
+        <td th:text="${crate.getName()}"></td>
+        <td th:text="${crate.getPrice()}"></td>
+        <td th:text="${crate.getCratesInStock()}"> </td>
+        <td th:text="${crate.noOfBottles}"> </td>
+        <td th:text="${crate.inStock}"></td>
     </tr>
-
-
-
-    </thead>
-
 
 </table>
 
