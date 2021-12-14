@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 
 
@@ -32,4 +29,6 @@ public class Crate {
     private double price;
     @PositiveOrZero(message="in Stock must be >= 0")
     private int cratesInStock;
+    @ManyToOne
+    private Bottle bottle;
 }

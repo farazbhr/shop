@@ -2,7 +2,7 @@ package de.shop.shop.controller;
 
 import de.shop.shop.model.Bottle;
 import de.shop.shop.model.Crate;
-import de.shop.shop.repository.BeverageRepository;
+import de.shop.shop.repository.BottleRepository;
 import de.shop.shop.repository.CrateRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +22,18 @@ import javax.validation.Valid;
 public class ShopController {
 
     private final String TAG = this.getClass().getName() +" :";
-    private final BeverageRepository beverageRepository;
-    private final  CrateRepository crateRepository;
+    private final BottleRepository bottleRepository;
+    private final CrateRepository crateRepository;
 
     @Autowired
-    public ShopController(BeverageRepository beverageRepository,CrateRepository crateRepository){
-        this.beverageRepository = beverageRepository;
+    public ShopController(BottleRepository bottleRepository, CrateRepository crateRepository){
+        this.bottleRepository = bottleRepository;
         this.crateRepository = crateRepository;
     }
 
     @GetMapping("/beverages")
     public String getBeverages(Model model){
-        model.addAttribute("bottles" , this.beverageRepository.findAll());
+        model.addAttribute("bottles" , this.bottleRepository.findAll());
         model.addAttribute("crates" , this.crateRepository.findAll());
         return "beveragesHtml";
     }
@@ -56,13 +56,17 @@ public class ShopController {
             return "portfolioHtml";
         }
 
-        this.beverageRepository.save(bottle);
+        if(bottle.getVolumePercent() > 0.0){
+            bottle.setAlcoholic(true);
+        }
+
+        this.bottleRepository.save(bottle);
 
         return "redirect:/beverages";
     }
 
     @PostMapping("/portfolio/crate")
-    public String addBottle(@Valid Crate crate, Errors errors, Model model){
+    public String addCrate(@Valid Crate crate, Errors errors, Model model){
 
         if(errors.hasErrors()){
             log.error(TAG + "Validation errors occurred : " + errors.getAllErrors());

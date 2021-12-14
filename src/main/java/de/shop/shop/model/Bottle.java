@@ -2,6 +2,7 @@ package de.shop.shop.model;
 
 //import android.arch.persistence.room.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,14 +24,13 @@ public class Bottle {
     private Long id;
     @NotNull(message="Name must be set")
     @NotEmpty(message="Name cannot be empty")
-    @Pattern(regexp = "^[A-Za-z0-9]*$", message = "Name can only contain letters and digits")
+    @Pattern(regexp = "^[A-Za-z0-9äÄöÖüÜß]*$", message = "Name can only contain letters and digits")
     private String name;
     @Pattern(regexp = "(https:\\/\\/).*\\.(?:jpg|gif|png)", message="Must be valid URL to a picture")
     private String bottlePic;
     @Positive(message="Volume must be > 0")
     private double volume;
-    //to be done: isAlcoholic must be true if VolumePercent > 0
-    //private boolean isAlcoholic;
+    private boolean isAlcoholic;
     @PositiveOrZero(message="VolumePercent must be >= 0")
     private double volumePercent;
     @Positive(message="Price must be > 0")
