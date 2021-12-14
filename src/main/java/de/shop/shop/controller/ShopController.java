@@ -2,8 +2,8 @@ package de.shop.shop.controller;
 
 import de.shop.shop.model.Bottle;
 import de.shop.shop.model.Crate;
-import de.shop.shop.repository.BottleRepository;
-import de.shop.shop.repository.CrateRepository;
+
+import de.shop.shop.service.BeverageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,19 +22,17 @@ import javax.validation.Valid;
 public class ShopController {
 
     private final String TAG = this.getClass().getName() +" :";
-    private final BottleRepository bottleRepository;
-    private final CrateRepository crateRepository;
+    private final BeverageService beverageService;
 
     @Autowired
-    public ShopController(BottleRepository bottleRepository, CrateRepository crateRepository){
-        this.bottleRepository = bottleRepository;
-        this.crateRepository = crateRepository;
+    public ShopController(BeverageService beverageService){
+        this.beverageService = beverageService;
     }
 
     @GetMapping("/beverages")
     public String getBeverages(Model model){
-        model.addAttribute("bottles" , this.bottleRepository.findAll());
-        model.addAttribute("crates" , this.crateRepository.findAll());
+        model.addAttribute("bottles" , this.beverageService.getBeverages());
+        model.addAttribute("crates" , this.beverageService.getCrates());
         return "beveragesHtml";
     }
 
@@ -46,7 +44,7 @@ public class ShopController {
     }
 
 
-    @PostMapping("/portfolio/bottle")
+    @PostMapping("/addBottle")
     public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
 
         if(errors.hasErrors()){
@@ -56,16 +54,12 @@ public class ShopController {
             return "portfolioHtml";
         }
 
-        if(bottle.getVolumePercent() > 0.0){
-            bottle.setAlcoholic(true);
-        }
+        this.beverageService.addBottle(bottle);
 
-        this.bottleRepository.save(bottle);
-
-        return "redirect:/beverages";
+        return "redirect:/portfolio";
     }
 
-    @PostMapping("/portfolio/crate")
+    @PostMapping("/addCrate")
     public String addCrate(@Valid Crate crate, Errors errors, Model model){
 
         if(errors.hasErrors()){
@@ -75,9 +69,9 @@ public class ShopController {
             return "portfolioHtml";
         }
 
-        this.crateRepository.save(crate);
+        this.beverageService.addCrate(crate);
 
-        return "redirect:/beverages";
+        return "redirect:/portfolio?type=crate";
     }
 
 

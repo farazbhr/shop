@@ -13,6 +13,7 @@
     </style>
     <script type="text/javascript">
         function buildForm() {
+
             if (document.getElementById("item").value == "beverage") {
                 document.getElementById("bottleTable").style.display="block";
                 document.getElementById("crateTable").style.display="none";
@@ -22,23 +23,25 @@
             }
         }
 
-        window.onload = function () {
-            buildForm();
-        }
+       window.onload = function () {
+                buildForm();
+         }
     </script>
 </head>
 <body>
 
 <label for="item">Choose an item type you want to add to the shop:</label>
 
-<select name="item" id="item" onChange="buildForm()">
+
+
+<select  id="item" onclick="buildForm()">
     <option value="beverage">Beverage</option>
     <option value="crate">Crate</option>
 </select>
 
 <table  id="bottleTable">
 
-    <form method="POST" th:action="@{/portfolio/bottle}" th:object="${bottle}" >
+    <form method="POST" th:action="@{/addBottle}" th:object="${bottle}" >
         <tr>
             <td>Name:</td>
             <td><input name="name" type="text" th:field="*{name}"/></td>
@@ -84,7 +87,7 @@
 </table>
 
     <table id="crateTable">
-    <form method="POST" th:action="@{/portfolio/crate}" th:object="${crate}">
+    <form method="POST" th:action="@{/addCrate}" th:object="${crate}">
         <tr>
             <td>Name:</td>
             <td><input name="name" type="text" th:field="*{name}"/></td>
@@ -118,6 +121,17 @@
     </form>
 </table>
 
+
+<div th:if="${#request.getParameter('type') != null}">
+    <script>
+        function crate() {
+            document.getElementById("item").selectedIndex = "1";
+           // window.history.replaceState({}, document.title, "/" + "portfolio");
+
+        }
+        crate();
+    </script>
+</div>
 
 </body>
 </html>
