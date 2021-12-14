@@ -52,7 +52,7 @@ public class ShopController {
     }
 
     @PostMapping("/submit")
-    public void submitOrder(){
+    public void submitOrder(Model model){
         System.out.println("test");
         }
 
