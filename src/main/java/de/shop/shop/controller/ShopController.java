@@ -43,6 +43,19 @@ public class ShopController {
         return "portfolioHtml";
     }
 
+    @GetMapping("/basket")
+    public String getBasket(Model model){
+
+        model.addAttribute("items");
+
+        return "basketHtml";
+    }
+
+    @PostMapping("/submit")
+    public void submitOrder(){
+        System.out.println("test");
+        }
+
 
     @PostMapping("/addBottle")
     public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
