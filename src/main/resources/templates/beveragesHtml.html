@@ -2,12 +2,20 @@
 <html lang="en"
       xmlns:th="http://thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/navigation.css}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Beverage shop</title>
 </head>
 <body>
+
+<ul>
+    <li><a class="active" href="http://localhost:8080/beverages">Beverages</a></li>
+    <li><a href="http://localhost:8080/portfolio">Portfolio</a></li>
+    <li><a href="http://localhost:8080/basket">Basket</a></li>
+    <li><a href="#about">About</a></li>
+</ul>
 
 <h1>Single Bottles</h1>
 <table class="table">
@@ -22,11 +30,12 @@
         <th>Price</th>
         <th>Supplier</th>
         <th>In stock</th>
+        <th>Add to cart</th>
     </tr>
     </thead>
 
-
     <tr th:each="bottle : ${bottles}">
+        <form method="POST" th:action="@{/addToBasket}" th:object="${bottle}" >
         <td th:text="${bottle.id}"></td>
         <td><img width="120" th:src="${bottle.bottlePic}" alt="No picture"/></td>
         <td th:text="${bottle.name}"> </td>
@@ -36,6 +45,10 @@
         <td th:text="${bottle.price}"></td>
         <td th:text="${bottle.supplier}"></td>
         <td th:text="${bottle.inStock}"></td>
+            <td>
+                <button>Add</button>
+            </td>
+        </form>
     </tr>
 </table>
 

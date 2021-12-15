@@ -3,7 +3,9 @@ package de.shop.shop.controller;
 import de.shop.shop.model.Bottle;
 import de.shop.shop.model.Crate;
 
+import de.shop.shop.model.Order;
 import de.shop.shop.service.BeverageService;
+import de.shop.shop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,10 +25,12 @@ public class ShopController {
 
     private final String TAG = this.getClass().getName() +" :";
     private final BeverageService beverageService;
+    private final OrderService orderService;
 
     @Autowired
-    public ShopController(BeverageService beverageService){
+    public ShopController(BeverageService beverageService, OrderService orderService){
         this.beverageService = beverageService;
+        this.orderService =orderService;
     }
 
     @GetMapping("/beverages")
@@ -51,10 +55,18 @@ public class ShopController {
         return "basketHtml";
     }
 
-    @PostMapping("/submit")
-    public void submitOrder(Model model){
-        System.out.println("test");
+    @PostMapping("/submitOrder")
+    public String submitOrder(Order order, Model model) {
+        model.addAttribute("order", order);
+        return "beveragesHtml";
         }
+
+    @PostMapping("/addToBasket")
+    public void addToBasket(Bottle bottle, Model model){
+
+        model.addAttribute("bottle", bottle);
+
+    }
 
 
     @PostMapping("/addBottle")
