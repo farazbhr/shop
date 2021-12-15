@@ -1,5 +1,6 @@
 package de.shop.shop.controller;
 
+import de.shop.shop.model.Beverage;
 import de.shop.shop.model.Bottle;
 import de.shop.shop.model.Crate;
 
@@ -32,7 +33,7 @@ public class ShopController {
     @GetMapping("/beverages")
     public String getBeverages(Model model){
         model.addAttribute("bottles" , this.beverageService.getBeverages());
-        model.addAttribute("crates" , this.beverageService.getCrates());
+        model.addAttribute("crates" , this.beverageService.getBeverages());
         return "beveragesHtml";
     }
 
@@ -45,22 +46,22 @@ public class ShopController {
 
 
     @PostMapping("/addBottle")
-    public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
+    public String addBottle(@Valid Beverage beverage, Errors errors, Model model){
 
         if(errors.hasErrors()){
             log.error(TAG + "Validation errors occurred : " + errors.getAllErrors());
-            model.addAttribute("bottle", bottle);
+            model.addAttribute("beverage", beverage);
             model.addAttribute("crate", new Crate());
             return "portfolioHtml";
         }
 
-        this.beverageService.addBottle(bottle);
+        this.beverageService.addBeverage(beverage);
 
         return "redirect:/portfolio";
     }
 
     @PostMapping("/addCrate")
-    public String addCrate(@Valid Crate crate, Errors errors, Model model){
+    public String addCrate(@Valid Beverage crate, Errors errors, Model model){
 
         if(errors.hasErrors()){
             log.error(TAG + "Validation errors occurred : " + errors.getAllErrors());
@@ -69,7 +70,7 @@ public class ShopController {
             return "portfolioHtml";
         }
 
-        this.beverageService.addCrate(crate);
+        this.beverageService.addBeverage(crate);
 
         return "redirect:/portfolio?type=crate";
     }
