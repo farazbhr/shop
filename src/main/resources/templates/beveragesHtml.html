@@ -2,12 +2,22 @@
 <html lang="en"
       xmlns:th="http://thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/navigation.css}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Beverage shop</title>
 </head>
 <body>
+
+
+    <ul>
+        <li><a class="active" href="#home">Beverages</a></li>
+        <li><a href="http://localhost:8080/portfolio">Portfolio</a></li>
+        <li><a href="#contact">Basket</a></li>
+        <li><a href="#about">About</a></li>
+    </ul>
+
 
 <h1>Single Bottles</h1>
 <table class="table">

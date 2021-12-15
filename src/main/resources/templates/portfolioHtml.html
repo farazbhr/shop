@@ -6,11 +6,10 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/navigation.css}"/>
     <meta charset="UTF-8">
     <title>Add</title>
-    <style>
 
-    </style>
     <script type="text/javascript">
         function buildForm() {
 
@@ -29,6 +28,13 @@
     </script>
 </head>
 <body>
+
+<ul>
+    <li><a class="active" href="http://localhost:8080/beverages">Beverages</a></li>
+    <li><a href="http://localhost:8080/portfolio">Portfolio</a></li>
+    <li><a href="#contact">Basket</a></li>
+    <li><a href="#about">About</a></li>
+</ul>
 
 <label for="item">Choose an item type you want to add to the shop:</label>
 
