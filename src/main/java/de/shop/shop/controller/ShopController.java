@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Slf4j  //Simple Logging Facade for Java
@@ -32,8 +33,9 @@ public class ShopController {
 
     @GetMapping("/beverages")
     public String getBeverages(Model model){
-        model.addAttribute("bottles" , this.beverageService.getBeverages());
-        model.addAttribute("crates" , this.beverageService.getBeverages());
+        model.addAttribute("bottles", beverageService.getBottles());
+        model.addAttribute("crates", beverageService.getCrates());
+
         return "beveragesHtml";
     }
 
@@ -45,17 +47,22 @@ public class ShopController {
     }
 
 
+    //change bottle to beverage
     @PostMapping("/addBottle")
-    public String addBottle(@Valid Beverage beverage, Errors errors, Model model){
+    public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
 
         if(errors.hasErrors()){
             log.error(TAG + "Validation errors occurred : " + errors.getAllErrors());
-            model.addAttribute("beverage", beverage);
+            model.addAttribute("beverage", bottle);
             model.addAttribute("crate", new Crate());
             return "portfolioHtml";
         }
 
-        this.beverageService.addBeverage(beverage);
+        if(bottle.getVolumePercent() > 0.0){
+            bottle.setAlcoholic(true);
+        }
+
+        this.beverageService.addBeverage(bottle);
 
         return "redirect:/portfolio";
     }

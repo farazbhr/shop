@@ -38,7 +38,7 @@
 
     <tr th:each="bottle : ${bottles}">
         <td th:text="${bottle.id}"></td>
-        <td><img width="120" th:src="${bottle.bottlePic}" alt="No picture"/></td>
+        <td><img width="120" th:src="${bottle.picture}" alt="No picture"/></td>
         <td th:text="${bottle.name}"> </td>
         <td th:text="${bottle.volume}"> </td>
         <td th:text="${bottle.volumePercent}"></td>
@@ -63,10 +63,10 @@
     </thead>
     <tr th:each="crate : ${crates}">
         <td th:text="${crate.id}"></td>
-        <td><img width="120" th:src="${crate.cratePic}" alt="No picture"/> </td>
+        <td><img width="120" th:src="${crate.picture}" alt="No picture"/> </td>
         <td th:text="${crate.name}"></td>
         <td th:text="${crate.price}"></td>
-        <td th:text="${crate.cratesInStock}"> </td>
+        <td th:text="${crate.inStock}"> </td>
         <td th:text="${crate.noOfBottles}"> </td>
     </tr>
 </table>

@@ -12,14 +12,12 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@AttributeOverrides({
-        @AttributeOverride(name = "name", column = @Column(name = "TYPE_Crate"))
-})
 public class Crate  extends Beverage{
-
 
     @Positive(message="Number of Bottles must be > 0")
     private  int noOfBottles;
-    @ManyToOne
+
+    @ManyToOne//(cascade=CascadeType.MERGE)
     private Bottle bottle;
+
 }
