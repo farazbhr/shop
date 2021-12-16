@@ -12,10 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Slf4j  //Simple Logging Facade for Java
@@ -62,10 +65,16 @@ public class ShopController {
         }
 
     @PostMapping("/addToBasket")
-    public void addToBasket(Bottle bottle, Model model){
+    public String addToBasket(@Valid List<Bottle> bottles, List<Crate> crates) {
 
-        model.addAttribute("bottle", bottle);
+        List<Bottle> bottleList = generateBottleMockup();
+        List<Crate> crateList = generateCrateMockup(bottleList.get(0),bottleList.get(1));
 
+
+
+
+
+        return "redirect:/basket";
     }
 
 
@@ -99,6 +108,57 @@ public class ShopController {
         return "redirect:/portfolio?type=crate";
     }
 
+    public List<Bottle> generateBottleMockup() {
 
+        List<Bottle> bottleList = new ArrayList<>();
+        Bottle bottle = new Bottle();
+        bottle.setBottlePic("https://wein.jpg");
+        bottle.setAlcoholic(true);
+        bottle.setId(12345L);
+        bottle.setInStock(10);
+        bottle.setName("wein");
+        bottle.setSupplier("testsupplier");
+        bottle.setVolume(5.0);
+        bottle.setVolumePercent(5.0);
+        bottle.setPrice(6);
 
+        Bottle bottle1 = new Bottle();
+        bottle.setBottlePic("https://bier.jpg");
+        bottle.setAlcoholic(true);
+        bottle.setId(12343L);
+        bottle.setInStock(10);
+        bottle.setName("bier");
+        bottle.setSupplier("testanbieter");
+        bottle.setVolume(5.0);
+        bottle.setVolumePercent(5.0);
+        bottle.setPrice(6);
+
+        bottleList.add(bottle);
+        bottleList.add(bottle1);
+        return bottleList;
+    }
+
+    public List<Crate> generateCrateMockup(Bottle bottle, Bottle bottle1) {
+
+        List<Crate> crateList = new ArrayList<>();
+        Crate crate = new Crate();
+        crate.setCratePic("https://weincrate.jpg");
+        crate.setId(22345L);
+        crate.setCratesInStock(10);
+        crate.setName("weincrate");
+        crate.setPrice(6);
+        crate.setBottle(bottle);
+
+        Crate crate1 = new Crate();
+        crate1.setCratePic("https://biercrate.jpg");
+        crate1.setId(22343L);
+        crate1.setCratesInStock(10);
+        crate1.setName("biercrate");
+        crate1.setBottle(bottle1);
+        crate1.setPrice(6);
+
+        crateList.add(crate);
+        crateList.add(crate1);
+        return crateList;
+    }
 }

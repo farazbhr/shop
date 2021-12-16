@@ -17,6 +17,29 @@ public class BeverageServiceImpl  implements BeverageService {
     public BeverageServiceImpl(BottleRepository bottleRepository, CrateRepository crateRepository) {
         this.beverageRepository = bottleRepository;
         this.crateRepository = crateRepository;
+        Bottle bottle = new Bottle();
+        bottle.setBottlePic("https://wein.jpg");
+        bottle.setAlcoholic(true);
+        bottle.setId(12345L);
+        bottle.setInStock(10);
+        bottle.setName("wein");
+        bottle.setSupplier("testsupplier");
+        bottle.setVolume(5.0);
+        bottle.setVolumePercent(5.0);
+        bottle.setPrice(6);
+        bottleRepository.save(bottle);
+
+        Bottle bottle1 = new Bottle();
+        bottle.setBottlePic("https://bier.jpg");
+        bottle.setAlcoholic(true);
+        bottle.setId(12343L);
+        bottle.setInStock(10);
+        bottle.setName("bier");
+        bottle.setSupplier("testanbieter");
+        bottle.setVolume(5.0);
+        bottle.setVolumePercent(5.0);
+        bottle.setPrice(6);
+        bottleRepository.save(bottle);
     }
 
 

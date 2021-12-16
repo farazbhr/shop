@@ -35,7 +35,7 @@
     </thead>
 
     <tr th:each="bottle : ${bottles}">
-        <form method="POST" th:action="@{/addToBasket}" th:object="${bottle}" >
+        <form method="POST" th:action="@{/addToBasket}">
         <td th:text="${bottle.id}"></td>
         <td><img width="120" th:src="${bottle.bottlePic}" alt="No picture"/></td>
         <td th:text="${bottle.name}"> </td>
@@ -43,10 +43,10 @@
         <td th:text="${bottle.volumePercent}"></td>
         <td th:text="${bottle.isAlcoholic}"></td>
         <td th:text="${bottle.price}"></td>
-        <td th:text="${bottle.supplier}"></td>
+        <td th:text="${bottle.supplier}" th:field="${bottle.supplier}"></td>
         <td th:text="${bottle.inStock}"></td>
             <td>
-                <button>Add</button>
+                <button class ="submit-button" type="submit">Add</button>
             </td>
         </form>
     </tr>
