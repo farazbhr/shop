@@ -7,34 +7,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class Crate {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
-
-    @NotNull(message="Name must be set")
-    @NotEmpty(message="Name cannot be empty")
-    @Pattern(regexp = "^[A-Za-z0-9]*$", message = "Name can only contain letters and digits")
-    private String name;
-
-    @Pattern(regexp = "(https:\\/\\/).*\\.(?:jpg|gif|png)", message="Must be valid URL to a picture")
-    private String cratePic;
+public class Crate extends Beverage{
 
     @Positive(message="Number of Bottles must be > 0")
     private  int noOfBottles;
 
-    @Positive(message="Price must be > 0")
-    private double price;
-
-    @PositiveOrZero(message="in Stock must be >= 0")
-    private int cratesInStock;
-
-    @ManyToOne
+    @ManyToOne//(cascade=CascadeType.ALL)
     private Bottle bottle;
+
 }

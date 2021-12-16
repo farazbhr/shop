@@ -4,9 +4,11 @@ import de.shop.shop.model.Bottle;
 import de.shop.shop.model.Crate;
 
 import de.shop.shop.model.Order;
+import de.shop.shop.model.OrderItem;
 import de.shop.shop.service.BeverageService;
 import de.shop.shop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +56,7 @@ public class ShopController {
     @GetMapping("/basket")
     public String getBasket(Model model){
 
-        model.addAttribute("items");
+        System.out.println(model.getAttribute("items"));
 
         return "basketHtml";
     }
@@ -65,10 +68,16 @@ public class ShopController {
         }
 
     @PostMapping("/addToBasket")
-    public String addToBasket(@Valid Order order) {
+    public String addToBasket(@Valid Order order, Model model) {
 
+        List<OrderItem> testList = new ArrayList<>();
+        OrderItem item = new OrderItem();
+        OrderItem item1 = new OrderItem();
+        testList.add(item);
+        testList.add(item1);
+        order.setOrderItemList(testList);
 
-
+        model.addAttribute("items", order.getOrderItemList());
         return "redirect:/basket";
     }
 
@@ -102,7 +111,7 @@ public class ShopController {
 
         return "redirect:/portfolio?type=crate";
     }
-
+/*
     public List<Bottle> generateBottleMockup() {
 
         List<Bottle> bottleList = new ArrayList<>();
@@ -156,4 +165,6 @@ public class ShopController {
         crateList.add(crate1);
         return crateList;
     }
+
+ */
 }
