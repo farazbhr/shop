@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -41,13 +42,13 @@ public class ShopController {
 
     @GetMapping("/portfolio")
     public String getPortfolio(Model model){
+        model.addAttribute("bottles", beverageService.getBottles());
         model.addAttribute("bottle", new Bottle());
         model.addAttribute("crate", new Crate());
         return "portfolioHtml";
     }
 
 
-    //change bottle to beverage
     @PostMapping("/addBottle")
     public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
 
@@ -58,28 +59,38 @@ public class ShopController {
             return "portfolioHtml";
         }
 
+        //set the 'isAlcoholic' attribute based on the value of 'volumePercent'
         if(bottle.getVolumePercent() > 0.0){
             bottle.setAlcoholic(true);
         }
-
         this.beverageService.addBeverage(bottle);
 
-        return "redirect:/portfolio";
+        return "redirect:/beverages";
     }
 
     @PostMapping("/addCrate")
-    public String addCrate(@Valid Beverage crate, Errors errors, Model model){
-
+    public String addCrate(@Valid Crate crate, Errors errors, Model model,
+                           @RequestParam(value="bottleId", required = false) Long bottleId)
+    {
         if(errors.hasErrors()){
             log.error(TAG + "Validation errors occurred : " + errors.getAllErrors());
+            model.addAttribute("bottles", beverageService.getBottles());
             model.addAttribute("bottle", new Bottle());
             model.addAttribute("crate", crate);
             return "portfolioHtml";
         }
 
+        //set the 'bottle' reference in crate based on the 'bottleId' request parameter
+        List<Bottle> bottles = beverageService.getBottles();
+        for(Bottle b : bottles){
+            if(b.getId() == bottleId){
+                crate.setBottle(b);
+            }
+        }
+
         this.beverageService.addBeverage(crate);
 
-        return "redirect:/portfolio?type=crate";
+        return "redirect:/beverages";
     }
 
 

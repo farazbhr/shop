@@ -56,8 +56,9 @@
         <th>Item number</th>
         <th>Image</th>
         <th>Name</th>
-        <th>Price</th>
+        <th>Bottle</th>
         <th>Number of Bottles</th>
+        <th>Price</th>
         <th>In stock</th>
     </tr>
     </thead>
@@ -65,9 +66,10 @@
         <td th:text="${crate.id}"></td>
         <td><img width="120" th:src="${crate.picture}" alt="No picture"/> </td>
         <td th:text="${crate.name}"></td>
+        <td th:text="${crate.bottle.name}"></td>
+        <td th:text="${crate.noOfBottles}"> </td>
         <td th:text="${crate.price}"></td>
         <td th:text="${crate.inStock}"> </td>
-        <td th:text="${crate.noOfBottles}"> </td>
     </tr>
 </table>
 

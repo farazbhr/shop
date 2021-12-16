@@ -19,7 +19,7 @@ public class Beverage {
 
     @NotNull(message="Name must be set")
     @NotEmpty(message="Name cannot be empty")
-    @Pattern(regexp = "^[A-Za-z0-9äÄöÖüÜß]*$", message = "Name can only contain letters and digits")
+    @Pattern(regexp = "^[A-Za-z0-9äÄöÖüÜß ]*$", message = "Name can only contain letters and digits")
     private String name;
 
     @Pattern(regexp = "(https:\\/\\/).*\\.(?:jpg|gif|png)", message="Must be valid URL to a picture")
@@ -30,8 +30,6 @@ public class Beverage {
 
     @PositiveOrZero(message="in Stock must be >= 0")
     private int inStock;
-
-    private String type;
 
 }
 

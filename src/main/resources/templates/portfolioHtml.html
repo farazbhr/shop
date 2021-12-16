@@ -105,6 +105,13 @@
             <td><span class="text-danger" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"></span><td>
         </tr>
         <tr>
+            <td>Bottle:</td>
+            <td><select th:name="bottleId">
+                    <option th:each="b : ${bottles}" th:value="${b.id}" th:text="${b.name}"></option>
+            </select></td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('bottle')}" th:errors="*{bottle}"></span><td>
+        </tr>
+        <tr>
             <td>Number of Bottles:</td>
             <td><input name="noOfBottles" type="text" th:field="*{noOfBottles}">
             <td><span class="text-danger" th:if="${#fields.hasErrors('noOfBottles')}" th:errors="*{noOfBottles}"></span><td>

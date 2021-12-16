@@ -31,10 +31,11 @@ public class BeverageServiceImpl  implements BeverageService {
         this.entityManager = entityManager;
     }
 
+    @Override
     public List<Bottle> getBottles(){
         return entityManager.createQuery("SELECT b from Bottle b").getResultList();
     }
-
+    @Override
     public List<Crate> getCrates(){
        return entityManager.createQuery("SELECT c from Crate c").getResultList();
     }

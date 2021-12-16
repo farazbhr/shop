@@ -7,17 +7,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class Crate  extends Beverage{
+public class Crate extends Beverage{
 
     @Positive(message="Number of Bottles must be > 0")
     private  int noOfBottles;
 
-    @ManyToOne//(cascade=CascadeType.MERGE)
+    @ManyToOne//(cascade=CascadeType.ALL)
     private Bottle bottle;
 
 }
