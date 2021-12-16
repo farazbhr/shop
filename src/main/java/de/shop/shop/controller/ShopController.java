@@ -1,10 +1,7 @@
 package de.shop.shop.controller;
 
-import de.shop.shop.model.Bottle;
-import de.shop.shop.model.Crate;
+import de.shop.shop.model.*;
 
-import de.shop.shop.model.Order;
-import de.shop.shop.model.OrderItem;
 import de.shop.shop.service.BeverageService;
 import de.shop.shop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.lang.reflect.Array;
@@ -56,29 +55,27 @@ public class ShopController {
     @GetMapping("/basket")
     public String getBasket(Model model){
 
-        System.out.println(model.getAttribute("items"));
-
+        if(model.asMap().get("order") instanceof Order){
+            Order order = (Order) model.asMap().get("order");
+            model.addAttribute("bottles", orderService.getUnderlyingBeverages(order ,"bottle"));
+            model.addAttribute("crates", orderService.getUnderlyingBeverages(order, "crate"));
+            model.addAttribute("order", order);
+        }
         return "basketHtml";
     }
 
     @PostMapping("/submitOrder")
     public String submitOrder(Order order, Model model) {
-        model.addAttribute("order", order);
+        System.out.println(order);
         return "beveragesHtml";
         }
 
     @PostMapping("/addToBasket")
-    public String addToBasket(@Valid Order order, Model model) {
+    public String addToBasket(Order order, Model model, final RedirectAttributes redirectAttrs) {
 
-        List<OrderItem> testList = new ArrayList<>();
-        OrderItem item = new OrderItem();
-        OrderItem item1 = new OrderItem();
-        testList.add(item);
-        testList.add(item1);
-        order.setOrderItemList(testList);
-
-        model.addAttribute("items", order.getOrderItemList());
+        redirectAttrs.addFlashAttribute("order", order);
         return "redirect:/basket";
+
     }
 
 

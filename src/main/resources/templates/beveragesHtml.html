@@ -37,7 +37,7 @@
     <tr th:each="bottle : ${bottles}">
         <form method="POST" th:action="@{/addToBasket}">
         <td th:text="${bottle.id}"></td>
-        <td><img width="120" th:src="${bottle.bottlePic}" alt="No picture"/></td>
+        <td><img width="120"  alt="No picture"/></td>
         <td th:text="${bottle.name}"> </td>
         <td th:text="${bottle.volume}"> </td>
         <td th:text="${bottle.volumePercent}"></td>

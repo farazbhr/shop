@@ -18,7 +18,6 @@ public class BeverageServiceImpl  implements BeverageService {
         this.beverageRepository = bottleRepository;
         this.crateRepository = crateRepository;
         Bottle bottle = new Bottle();
-        bottle.setBottlePic("https://wein.jpg");
         bottle.setAlcoholic(true);
         bottle.setId(12345L);
         bottle.setInStock(10);
@@ -30,7 +29,6 @@ public class BeverageServiceImpl  implements BeverageService {
         bottleRepository.save(bottle);
 
         Bottle bottle1 = new Bottle();
-        bottle.setBottlePic("https://bier.jpg");
         bottle.setAlcoholic(true);
         bottle.setId(12343L);
         bottle.setInStock(10);

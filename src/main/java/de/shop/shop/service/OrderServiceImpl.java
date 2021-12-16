@@ -1,19 +1,46 @@
 package de.shop.shop.service;
 
+import de.shop.shop.model.*;
+import de.shop.shop.repository.BeverageRepository;
 import de.shop.shop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final BeverageRepository beverageRepository;
 
     @Autowired
-    OrderServiceImpl(OrderRepository orderRepository){
+    OrderServiceImpl(OrderRepository orderRepository, BeverageRepository beverageRepository){
         this.orderRepository = orderRepository;
+        this.beverageRepository = beverageRepository;
     }
 
+    @Override
+    public List<?> getUnderlyingBeverages(Order order, String type) {
 
-
+        List<Bottle> bottleList = new ArrayList<>();
+        List<Crate> crateList = new ArrayList<>();
+        for (OrderItem item : order.getOrderItemList()) {
+            Long beverageId = item.getBeverageId();
+            if (beverageRepository.findById(beverageId).isPresent()) {
+                Beverage beverage = beverageRepository.findById(beverageId).get();
+                if(type.equals("bottle") && beverage instanceof Bottle){
+                        bottleList.add((Bottle) beverage);
+                } else if(type.equals("crate") && beverage instanceof Crate) {
+                        crateList.add((Crate) beverage);
+                }
+            }
+        }
+        if(type.equals("bottle")){
+            return bottleList;
+        } else {
+            return crateList;
+        }
+    }
 }
