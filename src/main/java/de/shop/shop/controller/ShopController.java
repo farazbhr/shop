@@ -65,12 +65,7 @@ public class ShopController {
         }
 
     @PostMapping("/addToBasket")
-    public String addToBasket(@Valid List<Bottle> bottles, List<Crate> crates) {
-
-        List<Bottle> bottleList = generateBottleMockup();
-        List<Crate> crateList = generateCrateMockup(bottleList.get(0),bottleList.get(1));
-
-
+    public String addToBasket(@Valid Order order) {
 
 
 
