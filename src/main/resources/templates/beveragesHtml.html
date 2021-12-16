@@ -24,8 +24,8 @@
     <thead>
     <tr>
         <th>Item number</th>
-        <th>Image</th>
         <th>Name</th>
+        <th>Image</th>
         <th>Volume</th>
         <th>Volume Percent</th>
         <th>Is alcoholic</th>
@@ -38,8 +38,8 @@
 
     <tr th:each="bottle : ${bottles}">
         <td th:text="${bottle.id}"></td>
-        <td><img width="120" th:src="${bottle.picture}" alt="No picture"/></td>
         <td th:text="${bottle.name}"> </td>
+        <td><img height="200" th:src="${bottle.picture}" alt="No picture"/></td>
         <td th:text="${bottle.volume}"> </td>
         <td th:text="${bottle.volumePercent}"></td>
         <td th:text="${bottle.isAlcoholic}"></td>
@@ -54,8 +54,8 @@
     <thead>
     <tr>
         <th>Item number</th>
-        <th>Image</th>
         <th>Name</th>
+        <th>Image</th>
         <th>Bottle</th>
         <th>Number of Bottles</th>
         <th>Price</th>
@@ -64,8 +64,8 @@
     </thead>
     <tr th:each="crate : ${crates}">
         <td th:text="${crate.id}"></td>
-        <td><img width="120" th:src="${crate.picture}" alt="No picture"/> </td>
         <td th:text="${crate.name}"></td>
+        <td><img height="200" th:src="${crate.picture}" alt="No picture"/> </td>
         <td th:text="${crate.bottle.name}"></td>
         <td th:text="${crate.noOfBottles}"> </td>
         <td th:text="${crate.price}"></td>

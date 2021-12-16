@@ -13,6 +13,8 @@
     <script type="text/javascript">
         function buildForm() {
 
+            sessionStorage.setItem("option", document.getElementById("item").value);
+
             if (document.getElementById("item").value == "beverage") {
                 document.getElementById("bottleTable").style.display="block";
                 document.getElementById("crateTable").style.display="none";
@@ -23,6 +25,7 @@
         }
 
        window.onload = function () {
+                document.getElementById("item").value = sessionStorage.getItem("option");
                 buildForm();
          }
     </script>
@@ -133,18 +136,6 @@
         </tr>
     </form>
 </table>
-
-
-<div th:if="${#request.getParameter('type') != null}">
-    <script>
-        function crate() {
-            document.getElementById("item").selectedIndex = "1";
-           // window.history.replaceState({}, document.title, "/" + "portfolio");
-
-        }
-        crate();
-    </script>
-</div>
 
 </body>
 </html>

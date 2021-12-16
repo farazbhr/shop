@@ -54,6 +54,7 @@ public class ShopController {
 
         if(errors.hasErrors()){
             log.error(TAG + "Validation errors occurred : " + errors.getAllErrors());
+            model.addAttribute("bottles", beverageService.getBottles());
             model.addAttribute("beverage", bottle);
             model.addAttribute("crate", new Crate());
             return "portfolioHtml";
