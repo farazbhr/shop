@@ -1,8 +1,6 @@
 package de.shop.shop.controller;
 
-import de.shop.shop.model.Beverage;
-import de.shop.shop.model.Bottle;
-import de.shop.shop.model.Crate;
+import de.shop.shop.model.*;
 
 import de.shop.shop.service.BeverageService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -37,6 +36,16 @@ public class ShopController {
         model.addAttribute("bottles", beverageService.getBottles());
         model.addAttribute("crates", beverageService.getCrates());
 
+        ShopOrder shopOrder = new ShopOrder();
+
+        shopOrder.setOrderItems(new ArrayList<>());
+        for (int i= 0; i< 5 ; i++){
+            shopOrder.getOrderItems().add(new OrderItem());
+        }
+
+        model.addAttribute("shopOrder", shopOrder);
+
+
         return "beveragesHtml";
     }
 
@@ -45,10 +54,20 @@ public class ShopController {
         model.addAttribute("bottles", beverageService.getBottles());
         model.addAttribute("bottle", new Bottle());
         model.addAttribute("crate", new Crate());
+
         return "portfolioHtml";
     }
 
 
+    @PostMapping("/addToBasket")
+    public String addToBasket(ShopOrder shopOrder, Model model){
+        log.error(TAG + "ShopOrder : " + shopOrder);
+        log.error(TAG + "ShopOrder : " + shopOrder.getOrderItems());
+
+        return "redirect:/portfolio";
+    }
+
+    //change bottle to beverage
     @PostMapping("/addBottle")
     public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
 
@@ -64,9 +83,10 @@ public class ShopController {
         if(bottle.getVolumePercent() > 0.0){
             bottle.setAlcoholic(true);
         }
+
         this.beverageService.addBeverage(bottle);
 
-        return "redirect:/beverages";
+        return "redirect:/portfolio";
     }
 
     @PostMapping("/addCrate")
@@ -91,7 +111,7 @@ public class ShopController {
 
         this.beverageService.addBeverage(crate);
 
-        return "redirect:/beverages";
+        return "redirect:/portfolio";
     }
 
 

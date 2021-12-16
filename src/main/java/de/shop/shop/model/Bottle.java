@@ -25,4 +25,5 @@ public class Bottle extends Beverage{
     @NotNull(message="Supplier cannot be empty")
     private String supplier;
 
+
 }
