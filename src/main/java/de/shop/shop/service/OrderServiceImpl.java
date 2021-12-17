@@ -43,4 +43,11 @@ public class OrderServiceImpl implements OrderService {
             return crateList;
         }
     }
+
+    @Override
+    public void storeOrder(Order order) {
+        this.orderRepository.save(order);
+    }
+
+
 }

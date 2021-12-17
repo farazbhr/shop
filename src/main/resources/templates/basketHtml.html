@@ -38,11 +38,9 @@
             <td width="20%" th:text="${bottle.price}"></td>
             <td width="20%" th:text="${bottle.supplier}"></td>
         </tr>
-        <tr>
-            <td>
-                <button>Submit your Order!</button>
-            </td>
-        </tr>
+</table>
+<h2>Crates:</h2>
+<table width="100%" class="table">
     <form method="POST" th:action="@{/submitOrder}" th:object="${order}">
         <thead>
         <tr>

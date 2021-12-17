@@ -2,6 +2,61 @@
 <html lang="en"
       xmlns:th="http://thymeleaf.org">
 <head>
+    <script>
+        const bottles = new Map();
+        const crates = new Map();
+
+        function addItem(itemId, map) {
+            let numBottles = map.get(itemId);
+            if (numBottles == undefined) {
+                // empty yet
+                numBottles = 1;
+            } else {
+                numBottles = numBottles + 1;
+            }
+            map.set(itemId, numBottles);
+            document.getElementById(itemId).getElementsByTagName('p')[0].innerHTML=numBottles;
+        }
+
+        function removeItem(itemId, map) {
+            let numBottles = map.get(itemId);
+            if (numBottles == undefined ) {
+                // do nothing
+            } else {
+                if(numBottles<=1){
+                    map.delete(itemId);
+                    document.getElementById(itemId).getElementsByTagName('p')[0].innerHTML="0";
+                }else{
+                    numBottles = numBottles - 1;
+                    map.set(itemId, numBottles);
+                    document.getElementById(itemId).getElementsByTagName('p')[0].innerHTML=numBottles;
+                }
+            }
+        }
+
+        function  fillForm(elemId){
+            alert("in fillForm");
+            // alert(document.getElementById(elemId));
+            // alert(document.getElementById(elemId).getElementsByTagName('tr'))
+            let maxItems= document.getElementById(elemId).getElementsByTagName('tr').length; // size of orderItems see server side
+            let notAllItemsAreFilled =false;
+            while (notAllItemsAreFilled && maxItems>0){
+                maxItems = maxItems-1;
+                for (const [key, value] of bottles.entries()){
+                    alert("key  " + key + "  " + value)
+                    let aRow =document.getElementById(elemId).getElementsByTagName('tr')[0];
+                    aRow.firstElementChild.setAttribute("th:field", value);
+                    alert(aRow.firstElementChild.firstChild);
+
+
+                }
+            }
+
+
+        }
+
+
+    </script>
     <link rel="stylesheet" th:href="@{/navigation.css}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -10,45 +65,73 @@
 </head>
 <body>
 
+
 <ul>
-    <li><a class="active" href="http://localhost:8080/beverages">Beverages</a></li>
+    <li><a class="active" href="#home">Beverages</a></li>
     <li><a href="http://localhost:8080/portfolio">Portfolio</a></li>
-    <li><a href="http://localhost:8080/basket">Basket</a></li>
+    <li><a href="#contact">Basket</a></li>
     <li><a href="#about">About</a></li>
+    <li id="addButton">
+        <form method="POST" id="orderForm" onsubmit="fillForm(this.id)" th:action="@{/addToBasket}" th:object="${shopOrder}">
+            <fieldset>
+                <input type="submit" id="submitButton" th:value="ToBasket" />
+                <table style="display: none">  <!---->
+                    <tbody>
+                    <tr th:each="item : *{orderItems}">
+                        <td><input name="beverageId"   type="text" th:text="${item.beverageId}" /></td>
+                        <td><input name="beverageId"   type="text" th:text="${item.position}" /></td>
+
+                        <!--  <td><input name="position" th:field="*{orderItems[__${itemStat.index}__].position}"/></td>
+                        <td><input name="beverageId" th:field="*{orderItems[__${itemStat.index}__].beverageId}"/></td>  -->
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+
+    </li>
+
 </ul>
+
 
 <h1>Single Bottles</h1>
 <table class="table">
     <thead>
     <tr>
         <th>Item number</th>
-        <th>Image</th>
         <th>Name</th>
+        <th>Image</th>
         <th>Volume</th>
         <th>Volume Percent</th>
         <th>Is alcoholic</th>
         <th>Price</th>
         <th>Supplier</th>
         <th>In stock</th>
-        <th>Add to cart</th>
+        <th>Add/Remove</th>
     </tr>
     </thead>
 
+
     <tr th:each="bottle : ${bottles}">
-        <form method="POST" th:action="@{/addToBasket}">
         <td th:text="${bottle.id}"></td>
-        <td><img width="120"  alt="No picture"/></td>
         <td th:text="${bottle.name}"> </td>
+        <td><img height="200" th:src="${bottle.picture}" alt="No picture"/></td>
         <td th:text="${bottle.volume}"> </td>
         <td th:text="${bottle.volumePercent}"></td>
         <td th:text="${bottle.isAlcoholic}"></td>
         <td th:text="${bottle.price}"></td>
-        <td th:text="${bottle.supplier}" th:field="${bottle.supplier}"></td>
+        <td th:text="${bottle.supplier}"></td>
         <td th:text="${bottle.inStock}"></td>
-            <td>
-                <button class ="submit-button" type="submit">Add</button>
-            </td>
-        </form>
+
+        <td>
+            <div th:id="${bottle.id}">
+                <button  onclick="addItem(this.parentNode.id, bottles)">+</button>
+                <p > 0 </p>
+                <button   onclick="removeItem(this.parentNode.id,bottles)">-</button>
+            </div>
+        </td>
+
+
     </tr>
 </table>
 
@@ -57,21 +140,33 @@
     <thead>
     <tr>
         <th>Item number</th>
-        <th>Image</th>
         <th>Name</th>
-        <th>Price</th>
+        <th>Image</th>
+        <th>Bottle</th>
         <th>Number of Bottles</th>
+        <th>Price</th>
         <th>In stock</th>
+        <th>Add/Remove</th>
+
     </tr>
     </thead>
     <tr th:each="crate : ${crates}">
         <td th:text="${crate.id}"></td>
-        <td><img width="120" th:src="${crate.cratePic}" alt="No picture"/> </td>
         <td th:text="${crate.name}"></td>
-        <td th:text="${crate.price}"></td>
-        <td th:text="${crate.cratesInStock}"> </td>
+        <td><img height="200" th:src="${crate.picture}" alt="No picture"/> </td>
+        <td th:text="${crate.bottle.name}"></td>
         <td th:text="${crate.noOfBottles}"> </td>
+        <td th:text="${crate.price}"></td>
+        <td th:text="${crate.inStock}"> </td>
+        <td>
+            <div th:id="${crate.id}">
+                <button   onclick="addItem(this.parentNode.id, crates)">+</button>
+                <p > 0 </p>
+                <button onclick="removeItem(this.parentNode.id,crates)">-</button>
+            </div>
+        </td>
     </tr>
+
 </table>
 
 </body>

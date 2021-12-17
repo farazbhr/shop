@@ -26,9 +26,9 @@ public class Order {
     @Positive(message="Price must be > 0")
     private double price;
 
-    @ManyToOne//(cascade=CascadeType.ALL)
     @NotNull
     @NotEmpty
+    @OneToMany
     private List<OrderItem> orderItemList;
 
 }

@@ -66,7 +66,7 @@ public class ShopController {
 
     @PostMapping("/submitOrder")
     public String submitOrder(Order order, Model model) {
-        System.out.println(order);
+        orderService.storeOrder(order);
         return "beveragesHtml";
         }
 
