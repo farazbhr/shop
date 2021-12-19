@@ -1,6 +1,7 @@
 package de.shop.shop.controller;
 
-import de.shop.shop.model.*;
+import de.shop.shop.model.Bottle;
+import de.shop.shop.model.Crate;
 
 import de.shop.shop.service.BeverageService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Slf4j  //Simple Logging Facade for Java
@@ -29,55 +29,47 @@ public class ShopController {
         this.beverageService = beverageService;
     }
 
-
-
-    @GetMapping("/portfolio")
-    public String getPortfolio(Model model){
-        model.addAttribute("bottles", beverageService.getBottles());
-        model.addAttribute("bottle", new Bottle());
-        model.addAttribute("crate", new Crate());
-       // OrderItem orderItem = ;
-        model.addAttribute("orderItem", new OrderItem());
-       // log.info(TAG + "orderItem get portlofio : " + orderItem);
-
-        return "portfolioHtml";
-    }
-
     @GetMapping("/beverages")
     public String getBeverages(Model model){
-        model.addAttribute("bottles", beverageService.getBottles());
-        model.addAttribute("crates", beverageService.getCrates());
-
-        ShopOrder shopOrder = new ShopOrder();
-        List<OrderItem> orderItems =  new ArrayList();
-        for (int i= 0; i< 2 ; i++){
-            OrderItem orderItem= new OrderItem();
-            orderItem.setBeverageId(new Long(i+ 10));
-            orderItems.add(orderItem);
-            orderItem.setShopOrder(shopOrder);
-            log.info(TAG + "orderItem bevor client : " + orderItem);
-
-        }
-
-        shopOrder.setOrderItems(orderItems);
-      //  log.info(TAG + "orderItem bevor client : " + shopOrder.getOrderItems());
-        model.addAttribute("shopOrder",shopOrder);
+        model.addAttribute("bottles" , this.beverageService.getBeverages());
+        model.addAttribute("crates" , this.beverageService.getCrates());
         return "beveragesHtml";
     }
 
-    @PostMapping("/addToBasket")
-    public String addToBasket(OrderItem [] orderItems ,  Errors errors, Model model){
-
-        if(orderItems!=null){
-            log.info(TAG + "shopOrder add to bas : " + orderItems);
-        }
-
-
-
-        return "redirect:/portfolio";
+    @GetMapping("/portfolio")
+    public String getPortfolio(Model model){
+        model.addAttribute("bottle", new Bottle());
+        model.addAttribute("crate", new Crate());
+        return "portfolioHtml";
     }
 
-    //change bottle to beverage
+    @GetMapping("/basket")
+    public String getBasket(Model model){
+
+        if(model.asMap().get("order") instanceof Order){
+            Order order = (Order) model.asMap().get("order");
+            model.addAttribute("bottles", orderService.getUnderlyingBeverages(order ,"bottle"));
+            model.addAttribute("crates", orderService.getUnderlyingBeverages(order, "crate"));
+            model.addAttribute("order", order);
+        }
+        return "basketHtml";
+    }
+
+    @PostMapping("/submitOrder")
+    public String submitOrder(Order order, Model model) {
+        orderService.storeOrder(order);
+        return "beveragesHtml";
+        }
+
+    @PostMapping("/addToBasket")
+    public String addToBasket(Order order, Model model, final RedirectAttributes redirectAttrs) {
+
+        redirectAttrs.addFlashAttribute("order", order);
+        return "redirect:/basket";
+
+    }
+
+
     @PostMapping("/addBottle")
     public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
 
