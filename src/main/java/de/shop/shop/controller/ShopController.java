@@ -3,7 +3,10 @@ package de.shop.shop.controller;
 import de.shop.shop.model.Bottle;
 import de.shop.shop.model.Crate;
 
+import de.shop.shop.model.Order;
+import de.shop.shop.model.OrderItem;
 import de.shop.shop.service.BeverageService;
+import de.shop.shop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +15,11 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Slf4j  //Simple Logging Facade for Java
@@ -23,23 +29,37 @@ public class ShopController {
 
     private final String TAG = this.getClass().getName() +" :";
     private final BeverageService beverageService;
+    private final OrderService orderService;
 
     @Autowired
-    public ShopController(BeverageService beverageService){
+    public ShopController(BeverageService beverageService,OrderService orderService){
+        this.orderService=orderService;
         this.beverageService = beverageService;
     }
 
     @GetMapping("/beverages")
     public String getBeverages(Model model){
-        model.addAttribute("bottles" , this.beverageService.getBeverages());
+        model.addAttribute("bottles" , this.beverageService.getBottles());
         model.addAttribute("crates" , this.beverageService.getCrates());
         return "beveragesHtml";
     }
 
     @GetMapping("/portfolio")
     public String getPortfolio(Model model){
+        model.addAttribute("bottles", beverageService.getBottles());
         model.addAttribute("bottle", new Bottle());
         model.addAttribute("crate", new Crate());
+       // OrderItem orderItem = ;
+        model.addAttribute("orderItem", new OrderItem());
+       // log.info(TAG + "orderItem get portlofio : " + orderItem);
+
+        return "portfolioHtml";
+    }
+
+    @GetMapping("/order")
+    public String getOrder(Model model){
+
+        //model.addAttribute("orders", );  orderService.getOrders() needed!!!
         return "portfolioHtml";
     }
 
