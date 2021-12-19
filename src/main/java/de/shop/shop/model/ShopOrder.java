@@ -7,6 +7,7 @@ import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopOrder {
+public class ShopOrder implements Serializable {
 
 
     @Id
@@ -25,8 +26,10 @@ public class ShopOrder {
     private double price;
 
 
+
     @OneToMany(mappedBy = "shopOrder")
-    private List<OrderItem> orderItems ;
+    List<OrderItem> orderItems;
+
 
 
 }

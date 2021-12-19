@@ -11,23 +11,29 @@
     <title>Add</title>
 
     <script type="text/javascript">
-        function buildForm() {
 
+        function temp(){
+            alert(document.getElementById("bottleTable").getElementsByTagName('tr')[0].getElementsByTagName("input")[0].outerHTML);
+        }
+
+        function buildForm() {
             sessionStorage.setItem("option", document.getElementById("item").value);
 
             if (document.getElementById("item").value == "beverage") {
-                document.getElementById("bottleTable").style.display="block";
-                document.getElementById("crateTable").style.display="none";
+                document.getElementById("bottleTable").style.display = "block";
+                document.getElementById("crateTable").style.display = "none";
             } else {
-                document.getElementById("bottleTable").style.display="none";
-                document.getElementById("crateTable").style.display="block";
+                document.getElementById("bottleTable").style.display = "none";
+                document.getElementById("crateTable").style.display = "block";
             }
         }
 
-       window.onload = function () {
-                document.getElementById("item").value = sessionStorage.getItem("option");
-                buildForm();
-         }
+        window.onload = function () {
+            document.getElementById("item").value = sessionStorage.getItem("option");
+            buildForm();
+        }
+
+
     </script>
 </head>
 <body>
@@ -43,49 +49,56 @@
 <label for="item">Choose an item type you want to add to the shop:</label>
 
 
-
-<select  id="item" onclick="buildForm()">
+<select id="item" onclick="buildForm()">
     <option value="beverage">Beverage</option>
     <option value="crate">Crate</option>
 </select>
 
-<table  id="bottleTable">
+<table id="bottleTable">
 
-    <form method="POST" th:action="@{/addBottle}" th:object="${bottle}" >
+    <form method="POST" th:action="@{/addBottle}" th:object="${bottle}"  onsubmit="temp()">
         <tr>
             <td>Name:</td>
             <td><input name="name" type="text" th:field="*{name}"/></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            <td>
         </tr>
         <tr>
             <td>URL for picture:</td>
             <td><input name="picture" type="text" th:field="*{picture}"/></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"></span>
+            <td>
         </tr>
         <tr>
             <td>Volume:</td>
             <td><input name="volume" type="text" th:field="*{volume}"></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('volume')}" th:errors="*{volume}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('volume')}" th:errors="*{volume}"></span>
+            <td>
         </tr>
         <tr>
             <td>Volume Percent:</td>
             <td><input name="volumePercent" type="text" th:field="*{volumePercent}"></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('volumePercent')}" th:errors="*{volumePercent}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('volumePercent')}"
+                      th:errors="*{volumePercent}"></span>
+            <td>
         </tr>
         <tr>
             <td>Price:</td>
             <td><input name="price" type="text" th:field="*{price}"></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            <td>
         </tr>
         <tr>
             <td>Supplier:</td>
             <td><input name="supplier" type="text" th:field="*{supplier}"></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('supplier')}" th:errors="*{supplier}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('supplier')}" th:errors="*{supplier}"></span>
+            <td>
         </tr>
         <tr>
             <td>In stock:</td>
             <td><input name="inStock" type="text" th:field="*{inStock}"></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"></span>
+            <td>
         </tr>
         <tr>
             <td>
@@ -96,39 +109,45 @@
 
 </table>
 
-    <table id="crateTable">
+<table id="crateTable">
     <form method="POST" th:action="@{/addCrate}" th:object="${crate}">
         <tr>
             <td>Name:</td>
             <td><input name="name" type="text" th:field="*{name}"/></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            <td>
         </tr>
         <tr>
             <td>URL for picture:</td>
             <td><input name="picture" type="text" th:field="*{picture}"/></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"></span>
+            <td>
         </tr>
         <tr>
             <td>Bottle:</td>
             <td><select th:name="bottleId">
-                    <option th:each="b : ${bottles}" th:value="${b.id}" th:text="${b.name}"></option>
+                <option th:each="b : ${bottles}" th:value="${b.id}" th:text="${b.name}"></option>
             </select></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('bottle')}" th:errors="*{bottle}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('bottle')}" th:errors="*{bottle}"></span>
+            <td>
         </tr>
         <tr>
             <td>Number of Bottles:</td>
             <td><input name="noOfBottles" type="text" th:field="*{noOfBottles}">
-            <td><span class="text-danger" th:if="${#fields.hasErrors('noOfBottles')}" th:errors="*{noOfBottles}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('noOfBottles')}" th:errors="*{noOfBottles}"></span>
+            <td>
         </tr>
         <tr>
             <td>Price:</td>
             <td><input name="price" type="text" th:field="*{price}"></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            <td>
         </tr>
         <tr>
             <td>In stock:</td>
             <td><input name="inStock" type="text" th:field="*{inStock}"></td>
-            <td><span class="text-danger" th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"></span><td>
+            <td><span class="text-danger" th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"></span>
+            <td>
         </tr>
         <tr>
             <td>
