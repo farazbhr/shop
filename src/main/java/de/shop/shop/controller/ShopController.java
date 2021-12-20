@@ -59,8 +59,9 @@ public class ShopController {
     @GetMapping("/order")
     public String getOrder(Model model){
 
-        //model.addAttribute("orders", );  orderService.getOrders() needed!!!
-        return "portfolioHtml";
+        List<Order> orderList = this.orderService.getStoredOrders();
+        model.addAttribute("orders", orderList);
+        return "order";
     }
 
     @GetMapping("/basket")

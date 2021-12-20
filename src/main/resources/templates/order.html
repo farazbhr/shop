@@ -63,6 +63,7 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
                     <table class="table">
                         <thead>
                         <tr>
@@ -73,14 +74,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td th:text="${orderitem.ID}">12345</td>
-                            <td th:text="${orderitem.price}">1.7</td>
-                            <td th:text="${orderitem.position}">4</td>
-                            <td th:text="${orderitem.beverageId}">4321</td>
+                        <tr th:each ="orderItem : ${order.orderItemList}">
+                            <td th:text="${orderItem.id}">34</td>
+                            <td th:text="${orderItem.price}">123</td>
+                            <td th:text="${orderItem.position}">334</td>
+                            <td th:text="${orderItem.beverageId}">22</td>
                         </tr>
                         </tbody>
                     </table>
+
                 </ul>
             </div>
         </td>
