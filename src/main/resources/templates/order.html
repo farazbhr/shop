@@ -56,14 +56,13 @@
     </thead>
     <tbody>
     <tr th:each="order : ${orders}">
-        <td th:text="${order.id}">
+        <td>
             <div class="dropdown">
                 <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
-                    111ID
+                    <label th:text="${order.id}"></label>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-
                     <table class="table">
                         <thead>
                         <tr>
@@ -75,18 +74,17 @@
                         </thead>
                         <tbody>
                         <tr th:each ="orderItem : ${order.orderItemList}">
-                            <td th:text="${orderItem.id}">34</td>
-                            <td th:text="${orderItem.price}">123</td>
-                            <td th:text="${orderItem.position}">334</td>
-                            <td th:text="${orderItem.beverageId}">22</td>
+                            <td th:text="${orderItem.id}"></td>
+                            <td th:text="${orderItem.price}"></td>
+                            <td th:text="${orderItem.position}"></td>
+                            <td th:text="${orderItem.beverageId}"></td>
                         </tr>
                         </tbody>
                     </table>
-
                 </ul>
             </div>
         </td>
-        <td th:text="${order.price}">222price</td>
+        <td th:text="${order.price}"></td>
     </tr>
     </tbody>
 </table>
