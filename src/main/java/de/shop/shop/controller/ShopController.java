@@ -33,11 +33,8 @@ public class ShopController {
     private final BeverageService beverageService;
     private final OrderService orderService;
 
-    @Bean
-    @SessionScope
-    public SessionBasket sessionBasket(){
-        return new SessionBasket();
-    }
+    @Autowired
+    private SessionBasket sessionBasket;
 
     @Autowired
     public ShopController(BeverageService beverageService,OrderService orderService){
@@ -89,9 +86,9 @@ public class ShopController {
 
     @GetMapping("/basket")
     public String getBasket(Model model){
-        SessionBasket basket = sessionBasket();
-        System.out.println(basket.getBasketItems().keySet());
-        model.addAttribute("basketItems", basket.getBasketItems());
+        System.out.println(model.getAttribute("basket"));
+
+
         return "basketHtml";
     }
 
@@ -105,16 +102,16 @@ public class ShopController {
     @PostMapping("/addToBasket")
     public String addToBasket(Model model,
                               @RequestParam(value="id") Long id,
-                              @RequestParam(value="number") int number){
+                              @RequestParam(value="number") int number, final RedirectAttributes redirectAttrs){
         System.out.println("Id: " + id + "; Number: " + number);
 
-        SessionBasket basket = sessionBasket();
+        SessionBasket basket = this.sessionBasket;
 
         HashMap<Long, Integer> items = basket.getBasketItems();
         items.put(id, number);
         System.out.println(items.keySet());
         basket.addItem(id, number);
-
+        redirectAttrs.addFlashAttribute("basket", basket);
         System.out.println(basket.getBasketItems().keySet());
 
         return "redirect:/basket";

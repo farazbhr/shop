@@ -3,7 +3,9 @@ package de.shop.shop.service;
 import de.shop.shop.model.*;
 import de.shop.shop.repository.BeverageRepository;
 import de.shop.shop.repository.OrderRepository;
+import org.h2.engine.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +16,9 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final BeverageRepository beverageRepository;
+
+    @Autowired
+    private SessionBasket basket;
 
     @Autowired
     OrderServiceImpl(OrderRepository orderRepository, BeverageRepository beverageRepository){
