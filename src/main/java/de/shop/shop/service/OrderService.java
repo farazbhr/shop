@@ -9,4 +9,6 @@ public interface OrderService {
     List<?> getUnderlyingBeverages(Order order, String bottle);
 
     void storeOrder(Order order);
+
+    List<Order> getStoredOrders();
 }

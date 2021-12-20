@@ -49,5 +49,10 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository.save(order);
     }
 
+    @Override
+    public List<Order> getStoredOrders() {
+        return this.orderRepository.findAll();
+    }
+
 
 }
