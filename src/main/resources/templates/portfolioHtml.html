@@ -29,7 +29,8 @@
         }
 
         window.onload = function () {
-            document.getElementById("item").value = sessionStorage.getItem("option");
+            var o = sessionStorage.getItem("option");
+            if(o != null){document.getElementById("item").value = o}
             buildForm();
         }
 

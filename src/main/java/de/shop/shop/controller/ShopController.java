@@ -1,14 +1,13 @@
 package de.shop.shop.controller;
 
-import de.shop.shop.model.Bottle;
-import de.shop.shop.model.Crate;
+import de.shop.shop.model.*;
 
-import de.shop.shop.model.Order;
-import de.shop.shop.model.OrderItem;
 import de.shop.shop.service.BeverageService;
 import de.shop.shop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.h2.engine.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,9 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -30,6 +32,12 @@ public class ShopController {
     private final String TAG = this.getClass().getName() +" :";
     private final BeverageService beverageService;
     private final OrderService orderService;
+
+    @Bean
+    @SessionScope
+    public SessionBasket sessionBasket(){
+        return new SessionBasket();
+    }
 
     @Autowired
     public ShopController(BeverageService beverageService,OrderService orderService){
@@ -63,7 +71,7 @@ public class ShopController {
         model.addAttribute("orders", orderList);
         return "order";
     }
-
+/*
     @GetMapping("/basket")
     public String getBasket(Model model){
 
@@ -76,19 +84,42 @@ public class ShopController {
         return "basketHtml";
     }
 
+
+ */
+
+    @GetMapping("/basket")
+    public String getBasket(Model model){
+        SessionBasket basket = sessionBasket();
+        System.out.println(basket.getBasketItems().keySet());
+        model.addAttribute("basketItems", basket.getBasketItems());
+        return "basketHtml";
+    }
+
     @PostMapping("/submitOrder")
     public String submitOrder(Order order, Model model) {
         orderService.storeOrder(order);
         return "beveragesHtml";
         }
 
+
     @PostMapping("/addToBasket")
-    public String addToBasket(Order order, Model model, final RedirectAttributes redirectAttrs) {
+    public String addToBasket(Model model,
+                              @RequestParam(value="id") Long id,
+                              @RequestParam(value="number") int number){
+        System.out.println("Id: " + id + "; Number: " + number);
 
-        redirectAttrs.addFlashAttribute("order", order);
+        SessionBasket basket = sessionBasket();
+
+        HashMap<Long, Integer> items = basket.getBasketItems();
+        items.put(id, number);
+        System.out.println(items.keySet());
+        basket.addItem(id, number);
+
+        System.out.println(basket.getBasketItems().keySet());
+
         return "redirect:/basket";
-
     }
+
 
 
     @PostMapping("/addBottle")

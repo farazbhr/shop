@@ -128,12 +128,20 @@
         <td th:text="${bottle.inStock}"></td>
 
         <td>
-            <div th:id="${bottle.id}">
+            <form method="POST" th:action="@{/addToBasket}">
+                <input type="hidden" th:name="id" th:value="${bottle.id}">
+                <input th:name="number" type="text" th:value="0">
+                <button>Add to basket</button>
+            </form>
+        </td>
+
+
+           <!-- <div th:id="${bottle.id}">
                 <button onclick="addItem(this.parentNode.id, bottles)">+</button>
                 <p> 0 </p>
                 <button onclick="removeItem(this.parentNode.id,bottles)">-</button>
             </div>
-        </td>
+            -->
 
 
     </tr>

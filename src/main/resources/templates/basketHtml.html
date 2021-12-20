@@ -30,6 +30,7 @@
             <th width="20%">Supplier</th>
         </tr>
         </thead>
+    <!--
         <tr th:each="bottle : ${bottles}">
             <td width="20%" th:text="${bottle.getName()}"></td>
             <td width="20%" th:text="${bottle.getVolume()"></td>
@@ -37,6 +38,11 @@
             <td width="20%"><img width="120" th:src="${bottle.getPicture()}" alt="No picture"/></td>
             <td width="20%" th:text="${bottle.price}"></td>
             <td width="20%" th:text="${bottle.supplier}"></td>
+        </tr>
+        -->
+        <tr th:each="item : ${basketItems}">
+            <td th:text="${item}"></td>
+
         </tr>
 </table>
 <h2>Crates:</h2>
