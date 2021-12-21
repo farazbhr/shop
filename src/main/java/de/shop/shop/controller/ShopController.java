@@ -1,5 +1,6 @@
 package de.shop.shop.controller;
 
+import com.google.common.collect.Multimap;
 import de.shop.shop.model.*;
 
 import de.shop.shop.service.BeverageService;
@@ -64,8 +65,11 @@ public class ShopController {
 
     @GetMapping("/basket")
     public String getBasket(Model model){
-
-        model.addAttribute("sessionBasket", this.orderService.getSessionBasket());
+        Multimap<Long, List<String>> itemList = this.orderService.getSessionBasket();
+        List<Bottle> existingBottles = this.beverageService.getBottles();
+        List<Crate> existingCrates = this.beverageService.getCrates();
+        model.addAttribute("basketBottles", this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "bottle"));
+        model.addAttribute("basketCrates", this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "crate"));
 
         return "basketHtml";
     }
@@ -80,10 +84,11 @@ public class ShopController {
     @PostMapping("/addToBasket")
     public String addToBasket(Model model,
                               @RequestParam(value="id") Long id,
-                              @RequestParam(value="number") int number){
+                              @RequestParam(value="number") int number,
+                              @RequestParam(value="beverageType") String type){
 
 
-        this.orderService.addItemToBasket(id, number);
+        this.orderService.addItemToBasket(id, number, type);
 
         return "redirect:/beverages";
     }

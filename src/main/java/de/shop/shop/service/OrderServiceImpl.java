@@ -1,17 +1,14 @@
 package de.shop.shop.service;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import de.shop.shop.model.*;
 import de.shop.shop.repository.BeverageRepository;
 import de.shop.shop.repository.OrderRepository;
-import org.h2.engine.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -23,31 +20,37 @@ public class OrderServiceImpl implements OrderService {
     private SessionBasket basket;
 
     @Autowired
-    OrderServiceImpl(OrderRepository orderRepository, BeverageRepository beverageRepository){
+    OrderServiceImpl(OrderRepository orderRepository, BeverageRepository beverageRepository) {
         this.orderRepository = orderRepository;
         this.beverageRepository = beverageRepository;
     }
 
     @Override
-    public List<?> getUnderlyingBeverages(Order order, String type) {
+    public Multimap<?, Integer> getUnderlyingBeverages(Multimap<Long, List<String>> hashMap, List<Bottle> existingBottles, List<Crate> existingCrates, String type) {
 
-        List<Bottle> bottleList = new ArrayList<>();
-        List<Crate> crateList = new ArrayList<>();
-        for (OrderItem item : order.getOrderItemList()) {
-            Long beverageId = item.getBeverageId();
-            if (beverageRepository.findById(beverageId).isPresent()) {
-                Beverage beverage = beverageRepository.findById(beverageId).get();
-                if(type.equals("bottle") && beverage instanceof Bottle){
-                        bottleList.add((Bottle) beverage);
-                } else if(type.equals("crate") && beverage instanceof Crate) {
-                        crateList.add((Crate) beverage);
+        Multimap<Bottle, Integer> bottleMap = ArrayListMultimap.create();
+        Multimap<Crate, Integer> crateMap = ArrayListMultimap.create();
+        for (Map.Entry<Long, List<String>> item : hashMap.entries()) {
+            Long id = item.getKey();
+            int beverageCount = Integer.parseInt(item.getValue().get(0));
+            if (type.equals("bottle") && item.getValue().get(1).equals("bottle")) {
+                for (Bottle b : existingBottles) {
+                    if (b.getId().equals(id)) {
+                        bottleMap.put(b, beverageCount);
+                    }
+                }
+            } else if (type.equals("crate") && item.getValue().get(1).equals("crate")) {
+                for (Crate c : existingCrates) {
+                    if (c.getId().equals(id)) {
+                        crateMap.put(c, beverageCount);
+                    }
                 }
             }
         }
-        if(type.equals("bottle")){
-            return bottleList;
+        if (type.equals("bottle")) {
+            return bottleMap;
         } else {
-            return crateList;
+            return crateMap;
         }
     }
 
@@ -62,10 +65,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public HashMap<Long, Integer> getSessionBasket(){return this.basket.getBasketItems();}
+    public Multimap<Long, List<String>> getSessionBasket() {
+        return this.basket.getBasketItems();
+    }
 
     @Override
-    public void addItemToBasket(Long id, int number){this.basket.addItem(id, number);}
-
+    public void addItemToBasket(Long id, int number, String type) {
+        this.basket.addItem(id, number, type);
+    }
 
 }

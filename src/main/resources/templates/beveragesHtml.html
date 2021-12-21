@@ -52,7 +52,8 @@
         <td>
             <form method="POST" th:action="@{/addToBasket}">
                 <input type="hidden" th:name="id" th:value="${bottle.id}">
-                <input th:name="number" type="text" th:value="0">
+                <input th:name="number" id="quantity" type="number" th:value="0" th:max="${bottle.inStock}" min="0">
+                <input type="hidden" th:name="beverageType" th:value="bottle">
                 <button>Add to basket</button>
             </form>
         </td>
@@ -86,7 +87,8 @@
         <td>
             <form method="POST" th:action="@{/addToBasket}">
                 <input type="hidden" th:name="id" th:value="${crate.id}">
-                <input th:name="number" type="text" th:value="0">
+                <input th:name="number" type="number" th:value="0" th:max="${crate.inStock}"  min="0">
+                <input type="hidden" th:name="beverageType" th:value="crate">
                 <button>Add to basket</button>
             </form>
         </td>

@@ -22,47 +22,45 @@
 <table width="100%" class="table">
         <thead>
         <tr>
-            <th width="20%">Name</th>
-            <th width="20%">Volume</th>
-            <th width="20%">Volume Percent</th>
-            <th width="20%">Picture</th>
-            <th width="20%">Price</th>
-            <th width="20%">Supplier</th>
+            <th width="15%">Counter</th>
+            <th width="15%">Name</th>
+            <th width="15%">Volume</th>
+            <th width="15%">Volume Percent</th>
+            <th width="15%">Picture</th>
+            <th width="15%">Total Price</th>
         </tr>
         </thead>
-    <!--
-        <tr th:each="bottle : ${bottles}">
-            <td width="20%" th:text="${bottle.getName()}"></td>
-            <td width="20%" th:text="${bottle.getVolume()"></td>
-            <td width="20%" th:text="${bottle.getVolumePercent()"></td>
-            <td width="20%"><img width="120" th:src="${bottle.getPicture()}" alt="No picture"/></td>
-            <td width="20%" th:text="${bottle.price}"></td>
-            <td width="20%" th:text="${bottle.supplier}"></td>
+        <tbody>
+        <tr th:each="bottle : ${basketBottles.keySet()}">
+            <td width="15%" th:text="${basketBottles.get(bottle).get(0)} + x"></td>
+            <td width="15%" th:text="${bottle.getName()}"></td>
+            <td width="15%" th:text="${bottle.getVolume()}"></td>
+            <td width="15%" th:text="${bottle.getVolumePercent()}"></td>
+            <td width="15%"><img width="120" th:src="${bottle.getPicture()}" alt="No picture"/></td>
+            <td width="15%" th:text="${bottle.getPrice() * basketBottles.get(bottle).get(0)}"></td>
         </tr>
-        -->
-        <tr th:each="item : ${sessionBasket.keySet()}">
-            <td th:text="${item}"></td>
-
-        </tr>
+    </tbody>
 </table>
 <h2>Crates:</h2>
 <table width="100%" class="table">
     <form method="POST" th:action="@{/submitOrder}" th:object="${order}">
         <thead>
         <tr>
-            <th width="20%">Name</th>
-            <th width="20%">Bottle Type</th>
-            <th width="20%">Number of Bottles</th>
-            <th width="20%">Picture</th>
-            <th width="20%">Price</th>
+            <th width="15%">Counter</th>
+            <th width="15%">Name</th>
+            <th width="15%">Number of Bottles</th>
+            <th width="15%">VP per Bottle</th>
+            <th width="15%">Picture</th>
+            <th width="15%">Total Price</th>
         </tr>
         </thead>
-        <tr th:each="crate : ${crates}">
-            <td width="20%" th:text="${crate.getName()}"></td>
-            <td width="20%" th:text="${crate.getBottle()"></td>
-            <td width="20%" th:text="${crate.getNoOfBottles()"></td>
-            <td width="20%"><img width="120" th:src="${crate.getPicture()}" alt="No picture"/></td>
-            <td width="20%" th:text="${crate.price}"></td>
+        <tr th:each="crate : ${basketCrates.keySet()}">
+            <td width="15%" th:text="${basketCrates.get(crate).get(0)} + x"></td>
+            <td width="15%" th:text="${crate.bottle.name}"></td>
+            <td width="15%" th:text="${crate.bottle.volumePercent}"></td>
+            <td width="15%" th:text="${crate.getNoOfBottles()}"></td>
+            <td width="15%"><img width="120" th:src="${crate.getPicture()}" alt="No picture"/></td>
+            <td width="15%" th:text="${crate.getPrice() * basketCrates.get(crate).get(0)}"></td>
         </tr>
         <tr>
             <td>

@@ -1,4 +1,4 @@
-package de.shop.shop;
+package de.shop.shop.model;
 
 
 import de.shop.shop.controller.ShopController;
@@ -19,12 +19,12 @@ import java.util.Arrays;
 public class DemoData {
 
 
+    @Autowired
     private final BeverageRepository BvRepo;
 
 
-    @Autowired
     public DemoData(BeverageRepository bvRepo) {
-        BvRepo = bvRepo;
+        this.BvRepo = bvRepo;
     }
 
     @EventListener
@@ -45,7 +45,7 @@ public class DemoData {
         bottle2.setInStock(8);
         bottle2.setPicture("https://cdn02.plentymarkets.com/99cbvkn2wswt/item/images/600/middle/Augustiner-Lagerbier-Hell-0-5-l-Bierflasche-kaufen.jpg");
 
-        Bottle bottle3 = new Bottle(200,true,10,"Schlenkerla");
+        Bottle bottle3 = new Bottle(400,true,10,"Schlenkerla");
         bottle3.setName("Bier3");
         bottle3.setPrice(4);
         bottle3.setInStock(15);
@@ -70,12 +70,14 @@ public class DemoData {
         bottle6.setPicture("https://cdn02.plentymarkets.com/99cbvkn2wswt/item/images/521/full/Aecht-Schlenkerla-Rauchbier-Maerzen-50-cl-Bierflasc_1.jpg");
 
         Crate crate1 = new Crate(3, bottle1);
+        crate1.setId(12L);
         crate1.setPrice(2);
         crate1.setInStock(10);
         crate1.setPicture("https://mediafile.deloma.de/image/upload/v1/images/product/39afa6d1-5240-4150-8a98-bfacf51f05a3.jpg");
         crate1.setName("BierCrate1");
 
         Crate crate2 = new Crate(3, bottle2);
+        crate1.setId(13L);
         crate2.setPrice(25);
         crate2.setInStock(10);
         crate2.setPicture("https://mediafile.deloma.de/image/upload/v1/images/product/39afa6d1-5240-4150-8a98-bfacf51f05a3.jpg");
