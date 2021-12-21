@@ -40,7 +40,7 @@
             <td width="20%" th:text="${bottle.supplier}"></td>
         </tr>
         -->
-        <tr th:each="item : ${basketItems}">
+        <tr th:each="item : ${sessionBasket.keySet()}">
             <td th:text="${item}"></td>
 
         </tr>

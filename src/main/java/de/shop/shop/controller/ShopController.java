@@ -5,9 +5,7 @@ import de.shop.shop.model.*;
 import de.shop.shop.service.BeverageService;
 import de.shop.shop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
-import org.h2.engine.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,11 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.annotation.SessionScope;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.Resource;
+import javax.print.attribute.HashPrintJobAttributeSet;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,9 +31,6 @@ public class ShopController {
     private final OrderService orderService;
 
     @Autowired
-    private SessionBasket sessionBasket;
-
-    @Autowired
     public ShopController(BeverageService beverageService,OrderService orderService){
         this.orderService=orderService;
         this.beverageService = beverageService;
@@ -46,6 +40,7 @@ public class ShopController {
     public String getBeverages(Model model){
         model.addAttribute("bottles" , this.beverageService.getBottles());
         model.addAttribute("crates" , this.beverageService.getCrates());
+
         return "beveragesHtml";
     }
 
@@ -54,9 +49,6 @@ public class ShopController {
         model.addAttribute("bottles", beverageService.getBottles());
         model.addAttribute("bottle", new Bottle());
         model.addAttribute("crate", new Crate());
-       // OrderItem orderItem = ;
-        model.addAttribute("orderItem", new OrderItem());
-       // log.info(TAG + "orderItem get portlofio : " + orderItem);
 
         return "portfolioHtml";
     }
@@ -68,33 +60,19 @@ public class ShopController {
         model.addAttribute("orders", orderList);
         return "order";
     }
-/*
+
+
     @GetMapping("/basket")
     public String getBasket(Model model){
 
-        if(model.asMap().get("order") instanceof Order){
-            Order order = (Order) model.asMap().get("order");
-            model.addAttribute("bottles", orderService.getUnderlyingBeverages(order ,"bottle"));
-            model.addAttribute("crates", orderService.getUnderlyingBeverages(order, "crate"));
-            model.addAttribute("order", order);
-        }
-        return "basketHtml";
-    }
-
-
- */
-
-    @GetMapping("/basket")
-    public String getBasket(Model model){
-        System.out.println(model.getAttribute("basket"));
-
+        model.addAttribute("sessionBasket", this.orderService.getSessionBasket());
 
         return "basketHtml";
     }
 
     @PostMapping("/submitOrder")
     public String submitOrder(Order order, Model model) {
-        orderService.storeOrder(order);
+        this.orderService.storeOrder(order);
         return "beveragesHtml";
         }
 
@@ -102,19 +80,12 @@ public class ShopController {
     @PostMapping("/addToBasket")
     public String addToBasket(Model model,
                               @RequestParam(value="id") Long id,
-                              @RequestParam(value="number") int number, final RedirectAttributes redirectAttrs){
-        System.out.println("Id: " + id + "; Number: " + number);
+                              @RequestParam(value="number") int number){
 
-        SessionBasket basket = this.sessionBasket;
 
-        HashMap<Long, Integer> items = basket.getBasketItems();
-        items.put(id, number);
-        System.out.println(items.keySet());
-        basket.addItem(id, number);
-        redirectAttrs.addFlashAttribute("basket", basket);
-        System.out.println(basket.getBasketItems().keySet());
+        this.orderService.addItemToBasket(id, number);
 
-        return "redirect:/basket";
+        return "redirect:/beverages";
     }
 
 

@@ -13,6 +13,4 @@ public interface BeverageService {
     public abstract List<Bottle> getBottles();
     public abstract List<Crate> getCrates();
 
-
-
 }

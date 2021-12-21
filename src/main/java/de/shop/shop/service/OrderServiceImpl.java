@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -58,6 +60,12 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getStoredOrders() {
         return this.orderRepository.findAll();
     }
+
+    @Override
+    public HashMap<Long, Integer> getSessionBasket(){return this.basket.getBasketItems();}
+
+    @Override
+    public void addItemToBasket(Long id, int number){this.basket.addItem(id, number);}
 
 
 }
