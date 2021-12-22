@@ -18,6 +18,7 @@ import java.util.List;
 @Component
 public class SessionBasket {
     private Multimap<Long, List<String>> basketItems;
+    private Order order;
 
     public SessionBasket(){
         this.basketItems = ArrayListMultimap.create();

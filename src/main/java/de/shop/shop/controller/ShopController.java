@@ -70,16 +70,19 @@ public class ShopController {
         List<Crate> existingCrates = this.beverageService.getCrates();
         model.addAttribute("basketBottles", this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "bottle"));
         model.addAttribute("basketCrates", this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "crate"));
-
+        Multimap<Bottle, Integer> bottles = (Multimap<Bottle, Integer>) model.getAttribute("basketBottles");
+        Multimap<Crate, Integer> crates = (Multimap<Crate, Integer>) model.getAttribute("basketCrates");
+        Order order = this.orderService.createOrder(bottles,crates);
+        this.orderService.storeOrder(order);
         return "basketHtml";
     }
 
     @PostMapping("/submitOrder")
-    public String submitOrder(Order order, Model model) {
-        this.orderService.storeOrder(order);
+    public String submitOrder(Model model) {
+
+        this.orderService.saveOrder(this.orderService.getOrder());
         return "beveragesHtml";
         }
-
 
     @PostMapping("/addToBasket")
     public String addToBasket(Model model,
@@ -92,8 +95,6 @@ public class ShopController {
 
         return "redirect:/beverages";
     }
-
-
 
     @PostMapping("/addBottle")
     public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
@@ -140,7 +141,4 @@ public class ShopController {
 
         return "redirect:/portfolio";
     }
-
-
-
 }

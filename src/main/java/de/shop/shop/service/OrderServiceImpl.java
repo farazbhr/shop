@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import de.shop.shop.model.*;
 import de.shop.shop.repository.BeverageRepository;
 import de.shop.shop.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +56,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void storeOrder(Order order) {
-        this.orderRepository.save(order);
+    public Order createOrder(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates) {
+
+        Order order = new Order();
+        List<OrderItem> itemList = new ArrayList<>();
+        int posCounter =0;
+        double totalPrice = 0;
+        for(Map.Entry<Bottle, Integer> e : bottles.entries()){
+            OrderItem orderItem = new OrderItem();
+            orderItem.setBeverageId(e.getKey().getId());
+            orderItem.setBeverageCount(e.getValue());
+            double itemPrice = e.getKey().getPrice() * e.getValue();
+            orderItem.setPrice(itemPrice);
+            totalPrice = totalPrice + itemPrice;
+            orderItem.setPosition(String.valueOf(posCounter));
+            posCounter++;
+            itemList.add(orderItem);
+        }
+        for(Map.Entry<Crate, Integer> e : crates.entries()){
+            OrderItem orderItem = new OrderItem();
+            orderItem.setBeverageId(e.getKey().getId());
+            orderItem.setBeverageCount(e.getValue());
+            double itemPrice = e.getKey().getPrice() * e.getValue();
+            orderItem.setPrice(itemPrice);
+            totalPrice = totalPrice + itemPrice;
+            orderItem.setPosition(String.valueOf(posCounter));
+            posCounter++;
+            itemList.add(orderItem);
+        }
+        order.setOrderItemList(itemList);
+        order.setPrice(totalPrice);
+        return order;
     }
 
     @Override
@@ -65,8 +95,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void storeOrder(Order order) {
+        this.basket.setOrder(order);
+    }
+
+    @Override
+    public void saveOrder(Order order) {
+        this.orderRepository.save(this.basket.getOrder());
+    }
+
+    @Override
     public Multimap<Long, List<String>> getSessionBasket() {
         return this.basket.getBasketItems();
+    }
+
+    public Order getOrder() {
+        return this.basket.getOrder();
     }
 
     @Override
