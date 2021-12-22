@@ -21,35 +21,35 @@
 
 
 <h1>Single Bottles</h1>
-<table class="table">
+<table width="100%" class="table">
     <thead>
     <tr>
-        <th>Item number</th>
-        <th>Name</th>
-        <th>Image</th>
-        <th>Volume</th>
-        <th>Volume Percent</th>
-        <th>Is alcoholic</th>
-        <th>Price</th>
-        <th>Supplier</th>
-        <th>In stock</th>
-        <th>Add/Remove</th>
+        <th width="10%">Item number</th>
+        <th width="10%">Name</th>
+        <th width="10%">Image</th>
+        <th width="10%">Volume</th>
+        <th width="10%">Volume Percent</th>
+        <th width="10%">Is alcoholic</th>
+        <th width="10%">Price</th>
+        <th width="10%">Supplier</th>
+        <th width="7.5%">In stock</th>
+        <th width="12.5%">Add/Remove</th>
     </tr>
     </thead>
 
 
     <tr th:each="bottle : ${bottles}">
-        <td th:text="${bottle.id}"></td>
-        <td th:text="${bottle.name}"></td>
-        <td><img height="200" th:src="${bottle.picture}" alt="No picture"/></td>
-        <td th:text="${bottle.volume}"></td>
-        <td th:text="${bottle.volumePercent}"></td>
-        <td th:text="${bottle.isAlcoholic}"></td>
-        <td th:text="${bottle.price}"></td>
-        <td th:text="${bottle.supplier}"></td>
-        <td th:text="${bottle.inStock}"></td>
+        <td width="10%" th:text="${bottle.id}"></td>
+        <td width="10%" th:text="${bottle.name}"></td>
+        <td width="10%"><img width="120" height="200" th:src="${bottle.picture}" alt="No picture"/></td>
+        <td width="10%" th:text="${bottle.volume +'l'}"></td>
+        <td width="10%" th:text="${bottle.volumePercent +'‰'}"></td>
+        <td width="10%" th:text="${bottle.isAlcoholic}"></td>
+        <td width="10%" th:text="${bottle.price + '$'}"></td>
+        <td width="10%" th:text="${bottle.supplier}"></td>
+        <td width="7.5%" th:text="${bottle.inStock +'x'}"></td>
 
-        <td>
+        <td width="12.5%">
             <form method="POST" th:action="@{/addToBasket}">
                 <input type="hidden" th:name="id" th:value="${bottle.id}">
                 <input th:name="number" id="quantity" type="number" th:value="0" th:min="1" th:max="${bottle.inStock}" min="0">
@@ -62,29 +62,29 @@
 </table>
 
 <h1>Crates</h1>
-<table class="table">
+<table width="100%" class="table">
     <thead>
     <tr>
-        <th>Item number</th>
-        <th>Name</th>
-        <th>Image</th>
-        <th>Bottle</th>
-        <th>Number of Bottles</th>
-        <th>Price</th>
-        <th>In stock</th>
-        <th>Add/Remove</th>
+        <th width="12.5%">Item number</th>
+        <th width="12.5%">Name</th>
+        <th width="12.5%">Image</th>
+        <th width="12.5%">Bottle</th>
+        <th width="12.5%">Number of Bottles</th>
+        <th width="12.5%">Price</th>
+        <th width="12.5%">In stock</th>
+        <th width="12.5%">Add/Remove</th>
 
     </tr>
     </thead>
     <tr th:each="crate : ${crates}">
-        <td th:text="${crate.id}"></td>
-        <td th:text="${crate.name}"></td>
-        <td><img height="200" th:src="${crate.picture}" alt="No picture"/></td>
-        <td th:text="${crate.bottle.name}"></td>
-        <td th:text="${crate.noOfBottles}"></td>
-        <td th:text="${crate.price}"></td>
-        <td th:text="${crate.inStock}"></td>
-        <td>
+        <td width="12.5%" th:text="${crate.id}"></td>
+        <td width="12.5%" th:text="${crate.name}"></td>
+        <td width="12.5%"><img width="120" height="200" th:src="${crate.picture}" alt="No picture"/></td>
+        <td width="12.5%" th:text="${crate.bottle.name}"></td>
+        <td width="12.5%" th:text="${crate.noOfBottles}"></td>
+        <td width="12.5%" th:text="${crate.price + '$'}"></td>
+        <td width="12.5%" th:text="${crate.inStock +'x'}"></td>
+        <td width="12.5%">
             <form method="POST" th:action="@{/addToBasket}">
                 <input type="hidden" th:name="id" th:value="${crate.id}">
                 <input th:name="number" type="number" th:value="0" th:min="1" th:max="${crate.inStock}"  min="0">
