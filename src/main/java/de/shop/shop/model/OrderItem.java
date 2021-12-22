@@ -30,4 +30,8 @@ public class OrderItem {
 
     @NotNull
     private Long beverageId;
+
+    @NotNull
+    private Integer beverageCount;
+
 }

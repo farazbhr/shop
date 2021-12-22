@@ -16,7 +16,7 @@ public class Crate extends Beverage{
     @Positive(message="Number of Bottles must be > 0")
     private  int noOfBottles;
 
-    @ManyToOne//(cascade=CascadeType.ALL)
+    @ManyToOne
     private Bottle bottle;
 
 }

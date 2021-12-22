@@ -1,10 +1,8 @@
 package de.shop.shop.controller;
 
-import de.shop.shop.model.Bottle;
-import de.shop.shop.model.Crate;
+import com.google.common.collect.Multimap;
+import de.shop.shop.model.*;
 
-import de.shop.shop.model.Order;
-import de.shop.shop.model.OrderItem;
 import de.shop.shop.service.BeverageService;
 import de.shop.shop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.print.attribute.HashPrintJobAttributeSet;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -41,6 +41,7 @@ public class ShopController {
     public String getBeverages(Model model){
         model.addAttribute("bottles" , this.beverageService.getBottles());
         model.addAttribute("crates" , this.beverageService.getCrates());
+
         return "beveragesHtml";
     }
 
@@ -49,9 +50,6 @@ public class ShopController {
         model.addAttribute("bottles", beverageService.getBottles());
         model.addAttribute("bottle", new Bottle());
         model.addAttribute("crate", new Crate());
-       // OrderItem orderItem = ;
-        model.addAttribute("orderItem", new OrderItem());
-       // log.info(TAG + "orderItem get portlofio : " + orderItem);
 
         return "portfolioHtml";
     }
@@ -64,32 +62,39 @@ public class ShopController {
         return "order";
     }
 
+
     @GetMapping("/basket")
     public String getBasket(Model model){
-
-        if(model.asMap().get("order") instanceof Order){
-            Order order = (Order) model.asMap().get("order");
-            model.addAttribute("bottles", orderService.getUnderlyingBeverages(order ,"bottle"));
-            model.addAttribute("crates", orderService.getUnderlyingBeverages(order, "crate"));
-            model.addAttribute("order", order);
-        }
+        Multimap<Long, List<String>> itemList = this.orderService.getSessionBasket();
+        List<Bottle> existingBottles = this.beverageService.getBottles();
+        List<Crate> existingCrates = this.beverageService.getCrates();
+        model.addAttribute("basketBottles", this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "bottle"));
+        model.addAttribute("basketCrates", this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "crate"));
+        Multimap<Bottle, Integer> bottles = (Multimap<Bottle, Integer>) model.getAttribute("basketBottles");
+        Multimap<Crate, Integer> crates = (Multimap<Crate, Integer>) model.getAttribute("basketCrates");
+        Order order = this.orderService.createOrder(bottles,crates);
+        this.orderService.storeOrder(order);
         return "basketHtml";
     }
 
     @PostMapping("/submitOrder")
-    public String submitOrder(Order order, Model model) {
-        orderService.storeOrder(order);
+    public String submitOrder(Model model) {
+
+        this.orderService.saveOrder(this.orderService.getOrder());
         return "beveragesHtml";
         }
 
     @PostMapping("/addToBasket")
-    public String addToBasket(Order order, Model model, final RedirectAttributes redirectAttrs) {
+    public String addToBasket(Model model,
+                              @RequestParam(value="id") Long id,
+                              @RequestParam(value="number") int number,
+                              @RequestParam(value="beverageType") String type){
 
-        redirectAttrs.addFlashAttribute("order", order);
-        return "redirect:/basket";
 
+        this.orderService.addItemToBasket(id, number, type);
+
+        return "redirect:/beverages";
     }
-
 
     @PostMapping("/addBottle")
     public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
@@ -136,7 +141,4 @@ public class ShopController {
 
         return "redirect:/portfolio";
     }
-
-
-
 }
