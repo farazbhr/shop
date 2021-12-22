@@ -23,11 +23,11 @@ public interface OrderService {
 
     void addItemToBasket(Long id, int number, String type);
 
-   void saveOrder(Order order);
+    void saveOrder(Order order);
 
     Order getOrder();
 
-   void resetBasket();
+    void resetBasket();
 
-    void decreaseStock(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates);
+    boolean decreaseStock(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates);
 }

@@ -9,6 +9,8 @@ import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.RollbackException;
+import javax.validation.ConstraintViolationException;
 import java.util.*;
 
 @Service
@@ -89,14 +91,20 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
-    public void decreaseStock(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates){
+    public boolean decreaseStock(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates){
         for(Map.Entry<Bottle, Integer> e : bottles.entries()){
 
             Bottle bottle = e.getKey();
             int oldStock = bottle.getInStock();
             int amountBasket = e.getValue();
 
-            bottle.setInStock(oldStock - amountBasket);
+            if(oldStock < amountBasket){
+                return false;
+            }
+            else{
+                bottle.setInStock(oldStock - amountBasket);
+            }
+
         }
 
         for(Map.Entry<Crate, Integer> e : crates.entries()){
@@ -105,8 +113,15 @@ public class OrderServiceImpl implements OrderService {
             int oldStock = crate.getInStock();
             int amountBasket = e.getValue();
 
-            crate.setInStock(oldStock - amountBasket);
+            if(oldStock < amountBasket){
+                return false;
+            }
+            else{
+                crate.setInStock(oldStock - amountBasket);
+            }
         }
+
+        return true;
     }
 
     @Override

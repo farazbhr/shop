@@ -87,12 +87,16 @@ public class ShopController {
         Multimap<Bottle, Integer> basketBottles = (Multimap<Bottle, Integer>) this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "bottle");
         Multimap<Crate, Integer> basketCrates = (Multimap<Crate, Integer>) this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "crate");
 
-        this.orderService.decreaseStock(basketBottles, basketCrates);
+        boolean wasSuccessful = this.orderService.decreaseStock(basketBottles, basketCrates);
 
-
-        this.orderService.saveOrder(this.orderService.getOrder());
-        this.orderService.resetBasket();
-        return "redirect:/beverages";
+        if(wasSuccessful) {
+            this.orderService.saveOrder(this.orderService.getOrder());
+            this.orderService.resetBasket();
+            return "redirect:/beverages";
+        }
+        else{
+            return "redirect:/basket";
+        }
     }
 
     @PostMapping("/addToBasket")
