@@ -13,19 +13,21 @@ public interface OrderService {
 
     Multimap<?, Integer> getUnderlyingBeverages(Multimap<Long, List<String>> hashMap, List<Bottle> existingBottles, List<Crate> existingCrates, String type);
 
-    public abstract Order createOrder(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates);
+    Order createOrder(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates);
 
-    public abstract List<Order> getStoredOrders();
+    List<Order> getStoredOrders();
 
-    public void storeOrder(Order order);
+    void storeOrder(Order order);
 
-    public abstract Multimap<Long, List<String>> getSessionBasket();
+    Multimap<Long, List<String>> getSessionBasket();
 
-    public abstract void addItemToBasket(Long id, int number, String type);
+    void addItemToBasket(Long id, int number, String type);
 
-    public void saveOrder(Order order);
+   void saveOrder(Order order);
 
-    public Order getOrder();
+    Order getOrder();
 
-    void resetBasket();
+   void resetBasket();
+
+    void decreaseStock(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates);
 }

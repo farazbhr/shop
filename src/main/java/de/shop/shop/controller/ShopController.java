@@ -80,6 +80,16 @@ public class ShopController {
 
     @PostMapping("/submitOrder")
     public String submitOrder(Model model) {
+        Multimap<Long, List<String>> itemList = this.orderService.getSessionBasket();
+        List<Bottle> existingBottles = this.beverageService.getBottles();
+        List<Crate> existingCrates = this.beverageService.getCrates();
+
+        Multimap<Bottle, Integer> basketBottles = (Multimap<Bottle, Integer>) this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "bottle");
+        Multimap<Crate, Integer> basketCrates = (Multimap<Crate, Integer>) this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "crate");
+
+        this.orderService.decreaseStock(basketBottles, basketCrates);
+
+
         this.orderService.saveOrder(this.orderService.getOrder());
         this.orderService.resetBasket();
         return "redirect:/beverages";

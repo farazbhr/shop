@@ -89,6 +89,26 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    public void decreaseStock(Multimap<Bottle, Integer> bottles, Multimap<Crate, Integer> crates){
+        for(Map.Entry<Bottle, Integer> e : bottles.entries()){
+
+            Bottle bottle = e.getKey();
+            int oldStock = bottle.getInStock();
+            int amountBasket = e.getValue();
+
+            bottle.setInStock(oldStock - amountBasket);
+        }
+
+        for(Map.Entry<Crate, Integer> e : crates.entries()){
+
+            Crate crate = e.getKey();
+            int oldStock = crate.getInStock();
+            int amountBasket = e.getValue();
+
+            crate.setInStock(oldStock - amountBasket);
+        }
+    }
+
     @Override
     public List<Order> getStoredOrders() {
         return this.orderRepository.findAll();
