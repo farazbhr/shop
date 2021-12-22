@@ -27,26 +27,26 @@ import java.util.List;
 @RequestMapping
 public class ShopController {
 
-    private final String TAG = this.getClass().getName() +" :";
+    private final String TAG = this.getClass().getName() + " :";
     private final BeverageService beverageService;
     private final OrderService orderService;
 
     @Autowired
-    public ShopController(BeverageService beverageService,OrderService orderService){
-        this.orderService=orderService;
+    public ShopController(BeverageService beverageService, OrderService orderService) {
+        this.orderService = orderService;
         this.beverageService = beverageService;
     }
 
     @GetMapping("/beverages")
-    public String getBeverages(Model model){
-        model.addAttribute("bottles" , this.beverageService.getBottles());
-        model.addAttribute("crates" , this.beverageService.getCrates());
+    public String getBeverages(Model model) {
+        model.addAttribute("bottles", this.beverageService.getBottles());
+        model.addAttribute("crates", this.beverageService.getCrates());
 
         return "beveragesHtml";
     }
 
     @GetMapping("/portfolio")
-    public String getPortfolio(Model model){
+    public String getPortfolio(Model model) {
         model.addAttribute("bottles", beverageService.getBottles());
         model.addAttribute("bottle", new Bottle());
         model.addAttribute("crate", new Crate());
@@ -55,16 +55,15 @@ public class ShopController {
     }
 
     @GetMapping("/order")
-    public String getOrder(Model model){
+    public String getOrder(Model model) {
 
         List<Order> orderList = this.orderService.getStoredOrders();
         model.addAttribute("orders", orderList);
         return "order";
     }
 
-
     @GetMapping("/basket")
-    public String getBasket(Model model){
+    public String getBasket(Model model) {
         Multimap<Long, List<String>> itemList = this.orderService.getSessionBasket();
         List<Bottle> existingBottles = this.beverageService.getBottles();
         List<Crate> existingCrates = this.beverageService.getCrates();
@@ -72,7 +71,9 @@ public class ShopController {
         model.addAttribute("basketCrates", this.orderService.getUnderlyingBeverages(itemList, existingBottles, existingCrates, "crate"));
         Multimap<Bottle, Integer> bottles = (Multimap<Bottle, Integer>) model.getAttribute("basketBottles");
         Multimap<Crate, Integer> crates = (Multimap<Crate, Integer>) model.getAttribute("basketCrates");
-        Order order = this.orderService.createOrder(bottles,crates);
+        Order order = this.orderService.createOrder(bottles, crates);
+        model.addAttribute("order", order);
+        System.out.println(model.getAttribute("order"));
         this.orderService.storeOrder(order);
         return "basketHtml";
     }
@@ -81,25 +82,22 @@ public class ShopController {
     public String submitOrder(Model model) {
         this.orderService.saveOrder(this.orderService.getOrder());
         this.orderService.resetBasket();
-        return "beveragesHtml";
-        }
+        return "redirect:/beverages";
+    }
 
     @PostMapping("/addToBasket")
     public String addToBasket(Model model,
-                              @RequestParam(value="id") Long id,
-                              @RequestParam(value="number") int number,
-                              @RequestParam(value="beverageType") String type){
-
-
+                              @RequestParam(value = "id") Long id,
+                              @RequestParam(value = "number") int number,
+                              @RequestParam(value = "beverageType") String type) {
         this.orderService.addItemToBasket(id, number, type);
-
         return "redirect:/beverages";
     }
 
     @PostMapping("/addBottle")
-    public String addBottle(@Valid Bottle bottle, Errors errors, Model model){
+    public String addBottle(@Valid Bottle bottle, Errors errors, Model model) {
 
-        if(errors.hasErrors()){
+        if (errors.hasErrors()) {
             log.error(TAG + "Validation errors occurred : " + errors.getAllErrors());
             model.addAttribute("bottles", beverageService.getBottles());
             model.addAttribute("beverage", bottle);
@@ -108,7 +106,7 @@ public class ShopController {
         }
 
         //set the 'isAlcoholic' attribute based on the value of 'volumePercent'
-        if(bottle.getVolumePercent() > 0.0){
+        if (bottle.getVolumePercent() > 0.0) {
             bottle.setAlcoholic(true);
         }
 
@@ -119,9 +117,8 @@ public class ShopController {
 
     @PostMapping("/addCrate")
     public String addCrate(@Valid Crate crate, Errors errors, Model model,
-                           @RequestParam(value="bottleId", required = false) Long bottleId)
-    {
-        if(errors.hasErrors()){
+                           @RequestParam(value = "bottleId", required = false) Long bottleId) {
+        if (errors.hasErrors()) {
             log.error(TAG + "Validation errors occurred : " + errors.getAllErrors());
             model.addAttribute("bottles", beverageService.getBottles());
             model.addAttribute("bottle", new Bottle());
@@ -131,14 +128,12 @@ public class ShopController {
 
         //set the 'bottle' reference in crate based on the 'bottleId' request parameter
         List<Bottle> bottles = beverageService.getBottles();
-        for(Bottle b : bottles){
-            if(b.getId() == bottleId){
+        for (Bottle b : bottles) {
+            if (b.getId() == bottleId) {
                 crate.setBottle(b);
             }
         }
-
         this.beverageService.addBeverage(crate);
-
         return "redirect:/portfolio";
     }
 }
