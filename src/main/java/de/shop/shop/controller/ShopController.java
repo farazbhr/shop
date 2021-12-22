@@ -79,8 +79,8 @@ public class ShopController {
 
     @PostMapping("/submitOrder")
     public String submitOrder(Model model) {
-
         this.orderService.saveOrder(this.orderService.getOrder());
+        this.orderService.resetBasket();
         return "beveragesHtml";
         }
 

@@ -27,4 +27,9 @@ public class SessionBasket {
     public void addItem(Long id, int number, String type){
         this.basketItems.put(id, Arrays.asList(String.valueOf(number),type));
     }
+
+    public void resetBasket(){
+        this.basketItems.clear();
+        this.order = new Order();
+    }
 }

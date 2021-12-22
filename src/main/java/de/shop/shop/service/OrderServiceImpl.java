@@ -118,4 +118,8 @@ public class OrderServiceImpl implements OrderService {
         this.basket.addItem(id, number, type);
     }
 
+    @Override
+    public void resetBasket() {
+        this.basket.resetBasket();
+    }
 }
